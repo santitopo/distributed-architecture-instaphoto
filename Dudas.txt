@@ -1,0 +1,4 @@
+Dudas
+
+- Donde se queda esuchando por conexiones: dentro del serverHandler o en Program? 
+  Van a haber muchos server handlers, cada uno atentiendo a un cliente o va a haber uno solo con todos los sockets?
