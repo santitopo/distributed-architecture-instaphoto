@@ -43,9 +43,9 @@
         </e>
         <e p="Program.cs" t="Include" />
         <e p="Protocol" t="Include">
+          <e p="CommandConstants.cs" t="Include" />
           <e p="Header.cs" t="Include" />
-          <e p="Specification.cs" t="Include" />
-          <e p="SpecificationHelper.cs" t="Include" />
+          <e p="HeaderConstants.cs" t="Include" />
         </e>
       </e>
       <e p="ObligatorioTopolanskyNajson.sln" t="IncludeFlat" />

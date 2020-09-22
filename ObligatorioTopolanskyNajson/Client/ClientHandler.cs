@@ -6,7 +6,6 @@ using Common.FileHandler;
 using Common.FileHandler.Interfaces;
 using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
-using Common.Protocol;
 
 namespace Client
 {
@@ -29,17 +28,34 @@ namespace Client
             _networkStreamHandler = new NetworkStreamHandler(_tcpClient.GetStream());
         }
 
-        public void Chat()
+        public void Handler()
+        {
+            var networkStream = _tcpClient.GetStream();
+            bool keepConnection = true;
+            
+            while (keepConnection)
+            {
+                string entryCommand = Receive(networkStream);
+            
+                //Decodifico e imprimo en pantalla
+            
+                string outCommand = Console.ReadLine();
+            
+                Send(outCommand);
+            
+                if (outCommand.Equals("REQ990000"))
+                {
+                    keepConnection = false;
+                }  
+            }
+
+        }
+
+        public void Send(string word)
         {
             //Comienzo a enviar datos
-            var keepConnection = true;
             using (var networkStream = _tcpClient.GetStream())
             {
-                while (keepConnection)
-                {
-                    //Leo la palabra entrante por consola
-                    var word = Console.ReadLine();
-                    
                     //La encripto
                     byte[] data = Encoding.UTF8.GetBytes(word);
                     byte[] dataLength = BitConverter.GetBytes(data.Length);
@@ -48,16 +64,64 @@ namespace Client
                     //                      2. el valor del string
                     networkStream.Write(dataLength, 0, 4);
                     networkStream.Write(data, 0, data.Length);
-                    
-                    //Me desconecto
-                    if (word.Equals("exit"))
-                    {
-                        keepConnection = false;
-                    }
-                }
             }
+        }
+        
+        public string Receive(NetworkStream networkStream)
+        {
+            var dataLength = new byte[4];    //Protocol.WordLength == 4
+            var totalReceived = 0;
+            while (totalReceived < 4)    //Recibo los primeros 4 bytes(tamaño) para preparar la llegada de datos
+            {
+                var received = networkStream.Read(dataLength, totalReceived, 4 - totalReceived);
+                if (received == 0) // if receive 0 bytes this means that connection was interrupted between the two points
+                {
+                    throw new SocketException();
+                }
+                totalReceived += received;
+            }
+            //Recibi el tamaño en bytes y lo transformo a entero
+            var length = BitConverter.ToInt32(dataLength, 0); 
+                    
+            //Creo un array de tamaño "length" para recibir el string
+            var data = new byte[length];    
+            totalReceived = 0;
+                    
+            //Comienzo a recibir el string
+            while (totalReceived < length)
+            {
+                var received = networkStream.Read(data, totalReceived, length - totalReceived);
+                if (received == 0)
+                {
+                    throw new SocketException();
+                }
+                totalReceived += received;
+            }
+            //Desencripto la palabra escrita en bytes a string
+            var word = Encoding.UTF8.GetString(data);
+                    
+            //Palabra enviada por el server
+            Console.WriteLine("Server says: " + word);
 
-            _tcpClient.Close();
+            return word;
+        }
+        public void Menu0()
+        {
+            Console.WriteLine("Bienvenido al sistema \n" + "1- Conectarse al servidor \n 2- Salir");
+
+            string option = Console.ReadLine();
+            
+                if (option.Equals("1"))
+                {
+                    Console.WriteLine("Connecting to server...");
+                    this.StartClient();
+                    Console.WriteLine("Connected to server");
+                    this.Handler();
+                    
+                }else if(option.Equals("2"))
+                {
+                    Console.WriteLine("Closing client..");
+                }
         }
         
          /*

@@ -8,11 +8,8 @@ namespace Client
         {
             Console.WriteLine("Starting client");
             var clientHandler = new ClientHandler();
-            Console.WriteLine("Connecting to server...");
-            clientHandler.StartClient();
-            Console.WriteLine("Connected to server");
             
-            clientHandler.Chat();
+            clientHandler.Menu0();
             
             /*
             Console.WriteLine("File transfer will start once server begins sending");

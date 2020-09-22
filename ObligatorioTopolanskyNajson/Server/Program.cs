@@ -11,7 +11,6 @@ namespace Server
         {
             Console.WriteLine("Booting up server...");
             var serverHandler = new ServerHandler();
-            Console.WriteLine("Waiting for client...");
             serverHandler.StartServer();
             
             /*

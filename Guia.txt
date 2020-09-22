@@ -1,11 +1,11 @@
 1) Cliente
-  a) Conectarse y desconectarse
-  b) Registrar un usuario nuevo (user/mail y password)
-  c) Login
-  d) Ver Lista de usuarios 
-  e) Subir una foto
-  f) Ver comentarios de una foto
-  g) Agregar un comentario a una foto   
+  a) Conectarse y desconectarse --> Menu 0 (No hay interaccion entre servidor/cliente)
+  b) Registrar un usuario nuevo (user/mail y password) --> Menu 1
+  c) Login --> Menu 1
+  d) Ver Lista de usuarios --> Menu 2
+  e) Subir una foto --> Menu 2
+  f) Ver comentarios de una foto --> Menu 2
+  g) Agregar un comentario a una foto --> Menu 2
 
   1) Clase Cliente 
     a) Socket client

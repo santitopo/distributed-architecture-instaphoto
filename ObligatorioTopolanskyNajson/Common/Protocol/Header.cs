@@ -1,27 +1,64 @@
 using System;
 using System.Text;
 
-namespace Common.Protocol
+namespace ProtocolLibrary
 {
     public class Header
     {
-        public static int GetLength()
+        private byte[] _direction;
+        private byte[] _command;
+        private byte[] _dataLength;
+
+        private String _sDirection;
+        private int _iCommand;
+        private int _iDataLength;
+
+        public string SDirection
         {
-            return Specification.FixedFileNameLength + Specification.FixedFileSizeLength;
+            get => _sDirection;
+            set => _sDirection = value;
         }
 
-        public byte[] Create(string fileName, long fileSize)
+        public int ICommand
         {
-            var header = new byte[GetLength()];
-            var fileNameData = BitConverter.GetBytes(Encoding.UTF8.GetBytes(fileName).Length);
-            if (fileNameData.Length != Specification.FixedFileNameLength)
-                throw new Exception("There is something wrong with the file name");
-            var fileSizeData = BitConverter.GetBytes(fileSize);
+            get => _iCommand;
+            set => _iCommand = value;
+        }
 
-            Array.Copy(fileNameData, 0, header, 0, Specification.FixedFileNameLength);
-            Array.Copy(fileSizeData, 0, header, Specification.FixedFileNameLength, Specification.FixedFileSizeLength);
+        public int IDataLength
+        {
+            get => _iDataLength;
+            set => _iDataLength = value;
+        }
 
+        public Header(string direction, int command, int datalength)
+        {
+
+            _direction = Encoding.UTF8.GetBytes(direction);
+            var stringCommand = command.ToString("D2");  //Maximo largo 2, si es menor a 2, completo con 0s a la izquierda 
+            _command = Encoding.UTF8.GetBytes(stringCommand);
+            var stringData = datalength.ToString("D4");  // 0 < Largo <= 9999 
+            _dataLength = Encoding.UTF8.GetBytes(stringData);
+        }
+
+        public byte[] GetRequest()
+        {
+            var header = new byte[HeaderConstants.Request.Length + HeaderConstants.CommandLength + HeaderConstants.DataLength];
+            Array.Copy(_direction, 0, header, 0, 3);
+            Array.Copy(_command, 0, header, HeaderConstants.Request.Length, 2);
+            Array.Copy(_dataLength, 0, header, HeaderConstants.Request.Length + HeaderConstants.CommandLength, 4);
             return header;
         }
+
+        public bool DecodeData(byte[] data)
+        {
+            _sDirection = Encoding.UTF8.GetString(data, 0, HeaderConstants.Request.Length);
+            var command = Encoding.UTF8.GetString(data, HeaderConstants.Request.Length, HeaderConstants.CommandLength);
+            _iCommand = int.Parse(command);
+            var dataLength = Encoding.UTF8.GetString(data, HeaderConstants.Request.Length + HeaderConstants.CommandLength, HeaderConstants.DataLength);
+            _iDataLength = int.Parse(dataLength);
+            return true;
+        }
+
     }
 }
