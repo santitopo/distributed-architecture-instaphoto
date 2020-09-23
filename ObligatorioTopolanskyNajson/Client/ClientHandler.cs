@@ -15,27 +15,29 @@ namespace Client
         private readonly TcpClient _tcpClient;
         private readonly IFileStreamHandler _fileStreamHandler;
         private INetworkStreamHandler _networkStreamHandler;
-
+        private NetworkStream _networkStream;
+            
         public ClientHandler()
         {
             _tcpClient = new TcpClient(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 0));
             _fileStreamHandler = new FileStreamHandler();
+
         }
 
         public void StartClient()
         {
             _tcpClient.Connect(IPAddress.Parse("127.0.0.1"), 6000);
             _networkStreamHandler = new NetworkStreamHandler(_tcpClient.GetStream());
+            _networkStream = _tcpClient.GetStream();
         }
 
         public void Handler()
         {
-            var networkStream = _tcpClient.GetStream();
             bool keepConnection = true;
             
             while (keepConnection)
             {
-                string entryCommand = Receive(networkStream);
+                string entryCommand = Receive();
             
                 //Decodifico e imprimo en pantalla
             
@@ -48,32 +50,28 @@ namespace Client
                     keepConnection = false;
                 }  
             }
-
         }
 
         public void Send(string word)
         {
             //Comienzo a enviar datos
-            using (var networkStream = _tcpClient.GetStream())
-            {
                     //La encripto
                     byte[] data = Encoding.UTF8.GetBytes(word);
                     byte[] dataLength = BitConverter.GetBytes(data.Length);
                     
                     //Le mando al servidor: 1. el tamaño del string
                     //                      2. el valor del string
-                    networkStream.Write(dataLength, 0, 4);
-                    networkStream.Write(data, 0, data.Length);
-            }
+                    _networkStream.Write(dataLength, 0, 4);
+                    _networkStream.Write(data, 0, data.Length);
         }
         
-        public string Receive(NetworkStream networkStream)
+        public string Receive()
         {
             var dataLength = new byte[4];    //Protocol.WordLength == 4
             var totalReceived = 0;
             while (totalReceived < 4)    //Recibo los primeros 4 bytes(tamaño) para preparar la llegada de datos
             {
-                var received = networkStream.Read(dataLength, totalReceived, 4 - totalReceived);
+                var received = _networkStream.Read(dataLength, totalReceived, 4 - totalReceived);
                 if (received == 0) // if receive 0 bytes this means that connection was interrupted between the two points
                 {
                     throw new SocketException();
@@ -90,7 +88,7 @@ namespace Client
             //Comienzo a recibir el string
             while (totalReceived < length)
             {
-                var received = networkStream.Read(data, totalReceived, length - totalReceived);
+                var received = _networkStream.Read(data, totalReceived, length - totalReceived);
                 if (received == 0)
                 {
                     throw new SocketException();
@@ -105,6 +103,7 @@ namespace Client
 
             return word;
         }
+        
         public void Menu0()
         {
             Console.WriteLine("Bienvenido al sistema \n" + "1- Conectarse al servidor \n 2- Salir");

@@ -51,7 +51,7 @@ namespace Server
                 
                 while (isClientConnected)
                 {
-                    var command = Receive(tcpClient, clientId, networkStream);
+                    var command = Receive(clientId, networkStream);
 
                     if (command.Equals("REQ990000"))    //Exit command
                     {
@@ -68,7 +68,10 @@ namespace Server
                                 Send("RES010000", networkStream);
                                 break;
                             default:
-                                break;
+                                isClientConnected = false;
+                                Console.WriteLine("Client is leaving");
+                                Console.WriteLine("Total Clients: {0}", clientsConnected -=1);
+                            break;
                         }
                     }
                 }
@@ -79,7 +82,7 @@ namespace Server
             }
         }
 
-        public string Receive(TcpClient tcpClient, int clientId, NetworkStream networkStream)
+        public string Receive(int clientId,NetworkStream networkStream)
         {
             var dataLength = new byte[4];    //Protocol.WordLength == 4
                     var totalReceived = 0;
@@ -118,12 +121,9 @@ namespace Server
                     return word;
         }
         
-        
         public void Send(string command, NetworkStream networkStream)
         {
             //Comienzo a enviar datos
-            using (networkStream)
-            {
                     //La encripto
                     byte[] data = Encoding.UTF8.GetBytes(command);
                     byte[] dataLength = BitConverter.GetBytes(data.Length);
@@ -132,7 +132,6 @@ namespace Server
                     //                     2. el valor del string
                     networkStream.Write(dataLength, 0, 4);
                     networkStream.Write(data, 0, data.Length);
-            }
         }
         
         /*
