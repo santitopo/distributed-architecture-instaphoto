@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
@@ -8,6 +9,7 @@ using Common.FileHandler;
 using Common.FileHandler.Interfaces;
 using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
+using ProtocolLibrary;
 
 namespace Server
 {
@@ -19,12 +21,18 @@ namespace Server
         private readonly IFileStreamHandler _fileStreamHandler;
         private INetworkStreamHandler _networkStreamHandler;
 
+        private static List<TcpClient> _clients;
+        private static bool _exit; 
+
         public ServerHandler()
         {
             clientsConnected = 0;
             _tcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"), 6000);
             _fileHandler = new FileHandler();
             _fileStreamHandler = new FileStreamHandler();
+
+            _exit = false;
+            _clients = new List<TcpClient>();
         }
 
         public void StartServer()
@@ -32,93 +40,118 @@ namespace Server
             Console.WriteLine("Waiting for client...");
             _tcpListener.Start(10);
             
-            while(true) // This while (true) should only be valid for examples
+            var threadConnections = new Thread(()=> ListenForConnections());
+            threadConnections.Start();
+
+            while (!_exit)
             {
-                //TcpClient permite establecer una conexion TCP entre dos IPEndPoint. 
-                var tcpClientSocket = _tcpListener.AcceptTcpClient(); // Gets the first client in the queue
-                new Thread(() => Handler(tcpClientSocket, clientsConnected +=1)).Start(); //Agarro el primer cliente y lo meto en un hilo
-                Console.WriteLine("Client connected - Total Clients: {0}", clientsConnected);
+                var userInput = Console.ReadLine();
+                switch (userInput)
+                {
+                    case "exit":
+                        _exit = true;
+                        
+                        TcpClient tcpClientTrap = new TcpClient(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 0));
+                        tcpClientTrap.Connect(IPAddress.Parse("127.0.0.1"), 6000);
+
+                        break;
+                    default:
+                        Console.WriteLine("Opcion incorrecta ingresada");
+                        break;
+                }
             }
         }
+
+        public void ListenForConnections()
+        {
+            while(!_exit)
+            {
+                var tcpClientSocket = _tcpListener.AcceptTcpClient(); // Gets the first client in the queue
+                _clients.Add(tcpClientSocket);
+                new Thread(() => Handler(tcpClientSocket)).Start(); //Agarro el cliente y lo meto en un hilo
+                Console.WriteLine("New client connected");
+            }
+            
+            Console.WriteLine("Disconnecting Server");
+            foreach (var client in _clients)
+            {
+                client.GetStream().Close();
+                client.Close();
+            }
+            
+            _tcpListener.Stop();
+        }
         
-        public void Handler(TcpClient tcpClient, int clientId)
+        public void Handler(TcpClient tcpClient)
         {    
-            var isClientConnected = true;
             try
             {
                 var networkStream = tcpClient.GetStream();
-                Send("RES000000", networkStream);    //Envio Menu1 a traves de comandos
-                
-                while (isClientConnected)
+                while (!_exit)
                 {
-                    var command = Receive(clientId, networkStream);
+                    var headerLength = HeaderConstants.Request.Length +
+                                       HeaderConstants.CommandLength +
+                                       HeaderConstants.DataLength;
 
-                    if (command.Equals("REQ990000"))    //Exit command
+                    var header = new Header();
+                    Receive(networkStream, header);  //La data entrante se guarda en el header
+
+                    switch (header.ICommand)
                     {
-                        isClientConnected = false;
-                        Console.WriteLine("Client is leaving");
-                        Console.WriteLine("Total Clients: {0}", clientsConnected -=1);
-                    }
-                    else     //Some command
-                    {
-                        switch (command)
-                        {
-                            case "00":
-                                Console.WriteLine("Opcion 1 - Menu 1");
-                                Send("RES010000", networkStream);
-                                break;
-                            default:
-                                isClientConnected = false;
-                                Console.WriteLine("Client is leaving");
-                                Console.WriteLine("Total Clients: {0}", clientsConnected -=1);
+                        case CommandConstants.Login:
+                            Console.WriteLine("Login...");
+                            string[] loginData = header.IData.Split("#");
+                            Console.WriteLine("User: {0} ", loginData[0]);
+                            Console.WriteLine("Password: {0}", loginData[1]);
                             break;
-                        }
+                        case CommandConstants.ListUsers:
+                            Console.WriteLine("List Users...");
+                            break;
+                        case CommandConstants.Message:
+                            Console.WriteLine("Message.. ");
+                            break;
                     }
                 }
             }
-            catch (SocketException)
+            catch
             {
-                Console.WriteLine("The client connection was interrupted");
+                // ignored
             }
         }
 
-        public string Receive(int clientId,NetworkStream networkStream)
+        public void Receive(NetworkStream networkStream, Header header)
         {
-            var dataLength = new byte[4];    //Protocol.WordLength == 4
-                    var totalReceived = 0;
-                    while (totalReceived < 4)    //Recibo los primeros 4 bytes(tamaño) para preparar la llegada de datos
+                var command = new byte[9];    //Protocol.WordLength == 9
+                var totalReceived = 0;
+                while (totalReceived < 9)    //Recibo los primeros 9 bytes(tamaño) para preparar la llegada de datos
+                {
+                    var received = networkStream.Read(command, totalReceived, 9 - totalReceived);
+                    if (received == 0) // if receive 0 bytes this means that connection was interrupted between the two points
                     {
-                        var received = networkStream.Read(dataLength, totalReceived, 4 - totalReceived);
-                        if (received == 0) // if receive 0 bytes this means that connection was interrupted between the two points
-                        {
-                            throw new SocketException();
-                        }
-                        totalReceived += received;
+                        throw new SocketException();
                     }
-                    //Recibi el tamaño en bytes y lo transformo a entero
-                    var length = BitConverter.ToInt32(dataLength, 0); 
-                    
-                    //Creo un array de tamaño "length" para recibir el string
-                    var data = new byte[length];    
-                    totalReceived = 0;
-                    
-                    //Comienzo a recibir el string
-                    while (totalReceived < length)
+                    totalReceived += received;
+                }
+                
+                //Desencripto el comando
+                header.DecodeData(command);
+                
+                //Creo un array de tamaño "length" para recibir el string
+                var data = new byte[header.IDataLength];    
+                totalReceived = 0;
+                
+                //Comienzo a recibir el string (si es que hay datos)
+                while (totalReceived < header.IDataLength)
+                {
+                    var received = networkStream.Read(data, totalReceived, header.IDataLength - totalReceived);
+                    if (received == 0)
                     {
-                        var received = networkStream.Read(data, totalReceived, length - totalReceived);
-                        if (received == 0)
-                        {
-                            throw new SocketException();
-                        }
-                        totalReceived += received;
+                        throw new SocketException();
                     }
-                    //Desencripto la palabra escrita en bytes a string
-                    var word = Encoding.UTF8.GetString(data);
-                    
-                    //Palabra enviada por el cliente
-                    Console.WriteLine("Client {0} says: " + word, clientId);
+                    totalReceived += received;
+                }
 
-                    return word;
+                header.IData = Encoding.UTF8.GetString(data);
         }
         
         public void Send(string command, NetworkStream networkStream)
@@ -134,45 +167,5 @@ namespace Server
                     networkStream.Write(data, 0, data.Length);
         }
         
-        /*
-         public void SendFile(string path)
-        {
-            //1. Obtenemos nombre y largo del archivo
-            //2. Envio largo del nombre y tamaño del archivo
-            //3. Envio nombre del archivo
-            //4. Envio el archivo de a partes (cada paerte 32kb o menos)
-            
-            long fileSize = _fileHandler.GetFileSize(path);
-            string fileName = _fileHandler.GetFileName(path);
-            var header = new Header().Create(fileName, fileSize);
-            _networkStreamHandler.Write(header);
-
-            _networkStreamHandler.Write(Encoding.UTF8.GetBytes(fileName));
-
-            long parts = SpecificationHelper.GetParts(fileSize);
-            Console.WriteLine("Will Send {0} parts",parts);
-            long offset = 0;
-            long currentPart = 1;
-
-            while (fileSize > offset)
-            {
-                byte[] data;
-                if (currentPart == parts)
-                {
-                    var lastPartSize = (int)(fileSize - offset);
-                    data = _fileStreamHandler.Read(path, offset, lastPartSize);
-                    offset += lastPartSize;
-                }
-                else
-                {
-                    data = _fileStreamHandler.Read(path, offset, Specification.MaxPacketSize);
-                    offset += Specification.MaxPacketSize;
-                }
-
-                _networkStreamHandler.Write(data);
-                currentPart++;
-            }
-        }
-        */
     }
 }

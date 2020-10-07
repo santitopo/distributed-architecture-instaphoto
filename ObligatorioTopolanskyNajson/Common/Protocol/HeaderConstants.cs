@@ -7,7 +7,8 @@
         
         public static string OkMessage = "OK";
         public static string ErrorMessage = "ERROR";
-        
+
+        public static int HeaderLength = 9;
         public static int CommandLength = 2;
         public static int DataLength = 4;
     }

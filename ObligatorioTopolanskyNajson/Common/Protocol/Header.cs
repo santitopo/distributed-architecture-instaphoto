@@ -31,6 +31,17 @@ namespace ProtocolLibrary
             set => _iDataLength = value;
         }
 
+        public string IData
+        {
+            get => IData;
+            set => IData = value;
+        }
+
+        
+        public Header()
+        {
+        }
+        
         public Header(string direction, int command, int datalength)
         {
 

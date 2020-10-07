@@ -6,6 +6,7 @@ using Common.FileHandler;
 using Common.FileHandler.Interfaces;
 using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
+using ProtocolLibrary;
 
 namespace Client
 {
@@ -37,32 +38,34 @@ namespace Client
             
             while (keepConnection)
             {
-                string entryCommand = Receive();
-            
-                //Decodifico e imprimo en pantalla
-            
-                string outCommand = Console.ReadLine();
-            
-                Send(outCommand);
-            
-                if (outCommand.Equals("REQ990000"))
+                string input = Console.ReadLine();
+                switch (input)
                 {
-                    keepConnection = false;
-                }  
+                    case "exit":
+                        break;
+                    case "1":
+                        Console.WriteLine("Ingrese usuario y contraseña: \n");
+                        string message = Console.ReadLine();
+                        Send(CommandConstants.Login, message);
+                        break;
+                    case "2":
+                        Console.WriteLine("Otra cosa..");
+                        break;
+                }
             }
         }
 
-        public void Send(string word)
+        public void Send( int command, string message)
         {
+            var header = new Header(HeaderConstants.Request, command, message.Length);  //REQ030004
+            var data = header.GetRequest();  //REQ030004 escrito en bytes
+            
             //Comienzo a enviar datos
-                    //La encripto
-                    byte[] data = Encoding.UTF8.GetBytes(word);
-                    byte[] dataLength = BitConverter.GetBytes(data.Length);
-                    
-                    //Le mando al servidor: 1. el tamaño del string
-                    //                      2. el valor del string
-                    _networkStream.Write(dataLength, 0, 4);
-                    _networkStream.Write(data, 0, data.Length);
+            //Le mando al servidor: 1. El comando
+            //                      2. El data del comando (si es que existe)
+            
+            _networkStream.Write(data, 0, data.Length);
+            //_networkStream.Write(Encoding.UTF8.GetBytes(message), 0, message.Length);
         }
         
         public string Receive()
