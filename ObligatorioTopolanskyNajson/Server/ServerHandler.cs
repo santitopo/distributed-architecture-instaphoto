@@ -95,35 +95,24 @@ namespace Server
                     switch (header.ICommand)
                     {
                         case CommandConstants.Login:
-                            Console.WriteLine("Login...");
-                            string[] loginData = header.IData.Split("#");
-                            //AccesoConcurrente
-                            User user = _userSessions.FindUserByUsernamePassword(loginData[0], loginData[1]);
-                            if (user != null)
-                            {
-                                if (!user.IsLogued)
-                                {
-                                    user.IsLogued = true; //(AccesoConcurrente)
-                                    Send(networkStream, CommandConstants.OK, "");
-                                }
-                                else
-                                {
-                                    string message = "La sesion ya esta iniciada para el usuario " + loginData[0];
-                                    Send(networkStream, CommandConstants.Error, message);
-                                }
-                            }
-                            else
-                            {
-                                string message = "El usuario no existe";
-                                Send(networkStream, CommandConstants.Error, message);
-                            }
+                            LoginFunction(networkStream, header);
+                            break;
+                        case CommandConstants.Register:
+                            RegisterFunction(networkStream, header);
                             break;
                         case CommandConstants.ListUsers:
-                            Console.WriteLine("Listar Usuarios...");
+                            ListUserFunction(networkStream, header);
                             break;
-                        case CommandConstants.Message:
-                            Console.WriteLine("Mensaje.. ");
+                        case CommandConstants.UploadPicture:
+                            UploadPictureFunction(networkStream, header);
                             break;
+                        case CommandConstants.GetComment:
+                            GetCommentFunction(networkStream, header);
+                            break;
+                        case CommandConstants.AddComment:
+                            AddCommentFunction(networkStream, header);
+                            break;
+
                     }
                 }
             }
@@ -134,6 +123,54 @@ namespace Server
             }
         }
 
+        private void LoginFunction(NetworkStream networkStream, Header header)
+        {
+            Console.WriteLine("Login...");
+            string[] loginData = header.IData.Split("#");
+            //AccesoConcurrente
+            User user = _userSessions.FindUserByUsernamePassword(loginData[0], loginData[1]);
+            if (user != null)
+            {
+                if (!user.IsLogued)
+                {
+                    user.IsLogued = true; //(AccesoConcurrente)
+                    Send(networkStream, CommandConstants.OK, "");
+                }
+                else
+                {
+                    string message = "La sesion ya esta iniciada para el usuario " + loginData[0];
+                    Send(networkStream, CommandConstants.Error, message);
+                }
+            }
+            else
+            {
+                string message = "El usuario no existe";
+                Send(networkStream, CommandConstants.Error, message);
+            }
+        }
+        private void AddCommentFunction(NetworkStream networkStream, Header header)
+        {
+            throw new NotImplementedException();
+        }
+        private void GetCommentFunction(NetworkStream networkStream, Header header)
+        {
+            throw new NotImplementedException();
+        }
+        private void UploadPictureFunction(NetworkStream networkStream, Header header)
+        {
+            throw new NotImplementedException();
+        }
+        private void ListUserFunction(NetworkStream networkStream, Header header)
+        {
+            throw new NotImplementedException();
+        }
+        private void RegisterFunction(NetworkStream networkStream, Header header)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+        
         public void Receive(NetworkStream networkStream, Header header)
         {
                 var command = new byte[9];    //Protocol.WordLength == 9
@@ -171,7 +208,6 @@ namespace Server
                     header.IData = Encoding.UTF8.GetString(data);
                 }
         }
-        
         public void Send(NetworkStream networkStream, int command, string message)
         {
             var header = new Header(HeaderConstants.Response, command, message.Length);  //REQ030004
@@ -186,20 +222,7 @@ namespace Server
                 networkStream.Write(Encoding.UTF8.GetBytes(message), 0, message.Length);
             }
         }
-        
-        /*
-        public void Send(string command, NetworkStream networkStream)
-        {
-                    //Comienzo a enviar datos
-                    //La encripto
-                    byte[] data = Encoding.UTF8.GetBytes(command);
-                    byte[] dataLength = BitConverter.GetBytes(data.Length);
-                    
-                    //Le mando al cliente: 1. el tamaño del string
-                    //                     2. el valor del string
-                    networkStream.Write(dataLength, 0, 4);
-                    networkStream.Write(data, 0, data.Length);
-        }
-        */
+
+
     }
 }

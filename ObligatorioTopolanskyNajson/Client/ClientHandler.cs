@@ -18,7 +18,7 @@ namespace Client
         private readonly IFileStreamHandler _fileStreamHandler;
         private INetworkStreamHandler _networkStreamHandler;
         private NetworkStream _networkStream;
-            
+        private static bool _keepConnection;
         public ClientHandler()
         {
             _tcpClient = new TcpClient(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 0));
@@ -35,48 +35,20 @@ namespace Client
 
         public void Handler()
         {
-            bool keepConnection = true;
+            _keepConnection = true;
             
-            while (keepConnection)
+            while (_keepConnection)
             {
-                Menu1();
-                string input = Console.ReadLine();
                 try
                 {
-                    switch (input)
-                    {
-                        case "a":
-                            Console.WriteLine("\nIngrese usuario y contraseña:\n");
-                            string message = Console.ReadLine();
-                            Send(CommandConstants.Login, message);
-                            Header header = new Header();
-                            Receive(header);
-                            if (header.ICommand == CommandConstants.OK)
-                            {
-                                Menu2();
-                            }
-                            else
-                            {
-                                Console.WriteLine("Error: {0}", header.IData);
-                                break; //Volver al mismo menu
-                            }
-                            break; 
-                        case "b":
-                            Console.WriteLine("Message..");
-                            Send(CommandConstants.Message, "");
-                            break;
-                        case "exit":
-                            keepConnection = false;
-                            break;
-                    }
+                    Menu1();
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                     Console.WriteLine("Desconectando debido a un error...");
-                    keepConnection = false;
+                    _keepConnection = false;
                 }
-                
             }
         }
 
@@ -133,48 +105,6 @@ namespace Client
             }
         }
         
-        
-        /*
-        public string Receive()
-        {
-            var dataLength = new byte[4];    //Protocol.WordLength == 4
-            var totalReceived = 0;
-            while (totalReceived < 4)    //Recibo los primeros 4 bytes(tamaño) para preparar la llegada de datos
-            {
-                var received = _networkStream.Read(dataLength, totalReceived, 4 - totalReceived);
-                if (received == 0) // if receive 0 bytes this means that connection was interrupted between the two points
-                {
-                    throw new SocketException();
-                }
-                totalReceived += received;
-            }
-            //Recibi el tamaño en bytes y lo transformo a entero
-            var length = BitConverter.ToInt32(dataLength, 0); 
-                    
-            //Creo un array de tamaño "length" para recibir el string
-            var data = new byte[length];    
-            totalReceived = 0;
-                    
-            //Comienzo a recibir el string
-            while (totalReceived < length)
-            {
-                var received = _networkStream.Read(data, totalReceived, length - totalReceived);
-                if (received == 0)
-                {
-                    throw new SocketException();
-                }
-                totalReceived += received;
-            }
-            //Desencripto la palabra escrita en bytes a string
-            var word = Encoding.UTF8.GetString(data);
-                    
-            //Palabra enviada por el server
-            Console.WriteLine("Server says: " + word);
-
-            return word;
-        }
-        */
-        
         public void Menu0()
         {
             Console.WriteLine("\nBienvenido al sistema \n" + "(1) - Conectarse al servidor\n(2) - Salir");
@@ -187,6 +117,7 @@ namespace Client
                 this.StartClient();
                 Console.WriteLine("Conectado al servidor");
                 this.Handler();
+                Console.WriteLine("Hasta luego...");
                 
             }else if(option.Equals("2"))
             {
@@ -196,21 +127,114 @@ namespace Client
         
         public void Menu1()
         {
-            Console.WriteLine("\n........ AUTENTICACIÓN ........\n" +
-                              "(a) - Loguearse\n" +
-                              "(b) - Registrar un usuario nuevo\n"+
-                              "(exit) - Salir");
+            while (_keepConnection)
+            {
+                Console.WriteLine("\n........ AUTENTICACIÓN ........\n" +
+                                  "(a) - Loguearse\n" +
+                                  "(b) - Registrar un usuario nuevo\n"+
+                                  "(exit) - Salir");
+                
+                string input = Console.ReadLine();
+                
+                switch (input)
+                {
+                    case "a":
+                        LoginFunction();
+                        break; 
+                    case "b":
+                        RegisterFunction();
+                        break;
+                    case "exit":
+                        _keepConnection = false;
+                        break;
+                }
+            }
+            
+        }
+        private void LoginFunction()
+        {
+            Console.WriteLine("\nIngrese usuario y contraseña:\n");
+            string input = Console.ReadLine();
+            Send(CommandConstants.Login, input);
+            Header header = new Header();
+            Receive(header);
+            if (header.ICommand == CommandConstants.OK)
+            {
+                Menu2();  //Meterse en otro switch
+            }
+            else
+            {
+                Console.WriteLine("Error: {0}", header.IData);
+            }
+        }
+
+        private void RegisterFunction()
+        {
+            Console.WriteLine("\nIngrese nombre, apellido, usuario y contraseña separados por '#':\n");
+            string input = Console.ReadLine();
+            Send(CommandConstants.Register, input);
+            Header header = new Header();
+            Receive(header);
+            if (header.ICommand == CommandConstants.Error)
+            {
+                Console.WriteLine("Error: {0}", header.IData);
+            }
         }
         
         public void Menu2()
         {
-            Console.WriteLine("\n........ MENU PRINCIPAL ........\n" + 
-                              "(d) - Ver Lista de Usuarios\n" +
-                              "(e) - Subir una foto\n"+
-                              "(f) - Ver comentarios de una foto\n" +
-                              "(g) - Agregar un comentario a una foto\n" +
-                              "(exit) - Salir");
+            while (_keepConnection)
+            {
+                Console.WriteLine("\n........ MENU PRINCIPAL ........\n" + 
+                                  "(a) - Ver Lista de Usuarios\n" +
+                                  "(b) - Subir una foto\n"+
+                                  "(c) - Ver comentarios de una foto\n" +
+                                  "(d) - Agregar un comentario a una foto\n" +
+                                  "(exit) - Desconectarse");
+                
+                string input = Console.ReadLine();
+                
+                switch (input)
+                {
+                    case "a":
+                        ListUsersFunction();
+                        break; 
+                    case "b":
+                        UploadPictureFunction();
+                        break;
+                    case "c":
+                        GetCommentsFunction();
+                        break; 
+                    case "d":
+                        AddCommentFunction();
+                        break;
+                    case "exit":
+                        _keepConnection = false;
+                        break;
+                }
+            }
+   
+            
         }
-        
+
+        private void AddCommentFunction()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void GetCommentsFunction()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void UploadPictureFunction()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ListUsersFunction()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

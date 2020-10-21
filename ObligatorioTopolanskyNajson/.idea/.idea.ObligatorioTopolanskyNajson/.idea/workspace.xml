@@ -25,14 +25,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfb4f17f-ea0d-4e48-874a-d4963477001c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Server/UserSessionsHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/ClientHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Client/ClientHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Common/Protocol/CommandConstants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Common/Protocol/CommandConstants.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/Protocol/Header.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Common/Protocol/Header.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/ServerHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/ServerHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/UserSessionsHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/UserSessionsHandler.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,17 +51,17 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Common/Program.cs" />
-        <option value="$PROJECT_DIR$/Client/Program.cs" />
         <option value="$PROJECT_DIR$/Common/Protocol/Specification.cs" />
         <option value="$PROJECT_DIR$/Common/Protocol/SpecificationHelper.cs" />
         <option value="$PROJECT_DIR$/Common/Protocol/HeaderConstants.cs" />
         <option value="$PROJECT_DIR$/Common/Protocol/Header.cs" />
         <option value="$PROJECT_DIR$/Server/System.cs" />
-        <option value="$PROJECT_DIR$/Server/UserSessionsHandler.cs" />
         <option value="$PROJECT_DIR$/Server/Program.cs" />
+        <option value="$PROJECT_DIR$/Server/UserSessionsHandler.cs" />
+        <option value="$PROJECT_DIR$/Client/ClientHandler.cs" />
         <option value="$PROJECT_DIR$/Common/Protocol/CommandConstants.cs" />
         <option value="$PROJECT_DIR$/Server/ServerHandler.cs" />
-        <option value="$PROJECT_DIR$/Client/ClientHandler.cs" />
+        <option value="$PROJECT_DIR$/Client/Program.cs" />
       </list>
     </option>
   </component>
@@ -163,6 +161,7 @@
       <workItem from="1602242859922" duration="1929000" />
       <workItem from="1602258618648" duration="504000" />
       <workItem from="1603278504741" duration="6095000" />
+      <workItem from="1603304932461" duration="2513000" />
     </task>
     <servers />
   </component>
@@ -196,22 +195,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1122" height="464" key="DebuggerActiveHint/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1602098689074" />
-    <state width="1921" height="305" key="GridCell.Tab.0.bottom" timestamp="1603285669010">
+    <state width="1877" height="297" key="GridCell.Tab.0.bottom" timestamp="1603307448331">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1921" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1603285669010" />
-    <state width="1921" height="305" key="GridCell.Tab.0.center" timestamp="1603285669009">
+    <state width="1877" height="297" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1603307448331" />
+    <state width="1877" height="297" key="GridCell.Tab.0.center" timestamp="1603307448330">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1921" height="305" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1603285669009" />
-    <state width="1921" height="305" key="GridCell.Tab.0.left" timestamp="1603285669009">
+    <state width="1877" height="297" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1603307448330" />
+    <state width="1877" height="297" key="GridCell.Tab.0.left" timestamp="1603307448329">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1921" height="305" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1603285669009" />
-    <state width="1921" height="305" key="GridCell.Tab.0.right" timestamp="1603285669009">
+    <state width="1877" height="297" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1603307448329" />
+    <state width="1877" height="297" key="GridCell.Tab.0.right" timestamp="1603307448331">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1921" height="305" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1603285669009" />
+    <state width="1877" height="297" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1603307448331" />
     <state width="1921" height="247" key="GridCell.Tab.1.bottom" timestamp="1602245299198">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

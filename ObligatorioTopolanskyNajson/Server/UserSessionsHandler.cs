@@ -22,7 +22,6 @@ namespace Server
 
             return aUser;
         }
-        
     }
 
     public class User
