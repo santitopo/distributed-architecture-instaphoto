@@ -62,6 +62,7 @@
         <e p="Program.cs" t="Include" />
         <e p="Server.csproj" t="IncludeRecursive" />
         <e p="ServerHandler.cs" t="Include" />
+        <e p="UserSessionsHandler.cs" t="Include" />
       </e>
     </e>
   </component>

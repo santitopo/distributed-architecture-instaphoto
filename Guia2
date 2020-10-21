@@ -1,0 +1,109 @@
+[8:54] Luis Barrague
+1 - Sockets
+
+----------- CLIENT
+
+------ 1) Construir el paquete de datos     a) Determinar la direccion (REQ/RES)
+
+    b) Comando a ejecutar -> TABLA DE COMANDOS
+
+    c) Determinar los datos a mandar (si los hay) (data length)
+
+    d) Asignar el largo total de los datos en el cabezal         Protocolo orientado a caracteres
+
+        var package = REQ010011pepe#pepito -> LOGIN, user: pepe, pass: pepito
+
+                      |       |          |
+
+                      | parte |   parte  |
+
+                      | fija  | variable | 2) Convertir esos datos a bytes
+
+    Encoding.UTF8.GetBytes(package) 1 byte = 1 caracter // NO ENVIAR CARACTERES "RAROS" (tildes, eñes y similares) 3) Envio de los datos     isent = 0;
+
+    while (isent < package.length) {
+
+        isent += socket.send(package, isent, package.length - iSent,SocketFlags.None);
+
+    } 
+
+SERVER
+
+------ Como se que el socket a traves del que recibo los datos corresponde a un cliente?? Hasta que el cliente se loguea -> solo aceptamos Login Cuando el usuario se loguea -> almacenar usuario XXX esta logueado     Thread <-> Usuario <-> Socket Funcionamiento General del SERVER
+
+--------------------------------- Hace todo esto EN PARALELO
+
+-------------------------- 1) Va a quedarse aceptando conexiones -> Thread aparte
+
+2) Muestra un menu que permite salir  -> Main
+
+3) Maneja los hilos de conexion de los Usuarios -> Thread que acepta dispara estos hilos     1) Recibir datos del Header     var buffer = new byte[Header.length];
+
+    iRecv = 0;
+
+    while (iRecv < Header.Length) {
+
+        var localRecv = socket.Receive(buffer, iRecv, Header.Length - iRecv,SocketFlags.None);
+
+        if (localRecv == 0) { // Se cerro la conexion
+
+            socket.Shutdown(Shutdown.Both);
+
+            socket.Close();
+
+        }
+
+        iRecv += localRecv;
+
+    }     2) Decodificar datos         a) Ver si tiene la direccion "correcta" (El server siempre espera un REQ)
+
+        b) Almacenar el comando (Login, lista usuarios, etc)
+
+        c) Determinamos el largo del paquete      3) Si hay mas datos para Recibir     var bufferData = new byte[dataLength];
+
+    iRecv = 0;
+
+    while (iRecv < dataLength) {
+
+        var localRecv = socket.Receive(bufferData, iRecv, dataLength - iRecv,SocketFlags.None);
+
+        if (localRecv == 0) { // Se cerro la conexion
+
+            socket.Shutdown(Shutdown.Both);
+
+            socket.Close();
+
+        }
+
+        iRecv += localRecv;
+
+    }     bufferData -> Deberia tener los datos necesarios para completar la ejecucion del comando. 
+
+    ***********************
+
+    *ESTO NO SE DEBE HACER*
+
+    ***********************
+
+    while(iRecv < data) {
+
+        var localData = socket.receive(buffer);
+
+        if (localData == 0) {
+
+            //Desconectar socket bla bla
+
+        }
+
+        iRecv += localData;
+
+    }  TABLA DE COMANDOS
+
+----------------- 01 - Login
+
+02 - Listar Usuarios
+
+03 - XXXX
+
+10 - Desconectar
+

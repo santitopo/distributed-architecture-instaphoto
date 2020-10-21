@@ -31,13 +31,8 @@ namespace ProtocolLibrary
             set => _iDataLength = value;
         }
 
-        public string IData
-        {
-            get => IData;
-            set => IData = value;
-        }
+        public string IData { get; set; }
 
-        
         public Header()
         {
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -38,20 +39,44 @@ namespace Client
             
             while (keepConnection)
             {
+                Menu1();
                 string input = Console.ReadLine();
-                switch (input)
+                try
                 {
-                    case "exit":
-                        break;
-                    case "1":
-                        Console.WriteLine("Ingrese usuario y contraseña: \n");
-                        string message = Console.ReadLine();
-                        Send(CommandConstants.Login, message);
-                        break;
-                    case "2":
-                        Console.WriteLine("Otra cosa..");
-                        break;
+                    switch (input)
+                    {
+                        case "a":
+                            Console.WriteLine("\nIngrese usuario y contraseña:\n");
+                            string message = Console.ReadLine();
+                            Send(CommandConstants.Login, message);
+                            Header header = new Header();
+                            Receive(header);
+                            if (header.ICommand == CommandConstants.OK)
+                            {
+                                Menu2();
+                            }
+                            else
+                            {
+                                Console.WriteLine("Error: {0}", header.IData);
+                                break; //Volver al mismo menu
+                            }
+                            break; 
+                        case "b":
+                            Console.WriteLine("Message..");
+                            Send(CommandConstants.Message, "");
+                            break;
+                        case "exit":
+                            keepConnection = false;
+                            break;
+                    }
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine("Desconectando debido a un error...");
+                    keepConnection = false;
+                }
+                
             }
         }
 
@@ -63,11 +88,53 @@ namespace Client
             //Comienzo a enviar datos
             //Le mando al servidor: 1. El comando
             //                      2. El data del comando (si es que existe)
-            
             _networkStream.Write(data, 0, data.Length);
-            //_networkStream.Write(Encoding.UTF8.GetBytes(message), 0, message.Length);
+            if (message.Length > 0)
+            {
+                _networkStream.Write(Encoding.UTF8.GetBytes(message), 0, message.Length);
+            }
         }
         
+        public void Receive(Header header)
+        {
+            var command = new byte[9];    //Protocol.WordLength == 9
+            var totalReceived = 0;
+            while (totalReceived < 9)    //Recibo los primeros 9 bytes(tamaño) para preparar la llegada de datos
+            {
+                var received = _networkStream.Read(command, totalReceived, 9 - totalReceived);
+                if (received == 0) // if receive 0 bytes this means that connection was interrupted between the two points
+                {
+                    throw new SocketException();
+                }
+                totalReceived += received;
+            }
+
+            //Desencripto el comando
+            header.DecodeData(command);
+
+            if (header.IDataLength > 0)
+            {
+                //Creo un array de tamaño "length" para recibir el string
+                var data = new byte[header.IDataLength];    
+                totalReceived = 0;
+                
+                //Comienzo a recibir el string (si es que hay datos)
+                while (totalReceived < header.IDataLength)
+                {
+                    var received = _networkStream.Read(data, totalReceived, header.IDataLength - totalReceived);
+                    if (received == 0)
+                    {
+                        throw new SocketException();
+                    }
+                    totalReceived += received;
+                }
+
+                header.IData = Encoding.UTF8.GetString(data);
+            }
+        }
+        
+        
+        /*
         public string Receive()
         {
             var dataLength = new byte[4];    //Protocol.WordLength == 4
@@ -106,62 +173,44 @@ namespace Client
 
             return word;
         }
+        */
         
         public void Menu0()
         {
-            Console.WriteLine("Bienvenido al sistema \n" + "1- Conectarse al servidor \n 2- Salir");
-
+            Console.WriteLine("\nBienvenido al sistema \n" + "(1) - Conectarse al servidor\n(2) - Salir");
+                
             string option = Console.ReadLine();
             
-                if (option.Equals("1"))
-                {
-                    Console.WriteLine("Connecting to server...");
-                    this.StartClient();
-                    Console.WriteLine("Connected to server");
-                    this.Handler();
-                    
-                }else if(option.Equals("2"))
-                {
-                    Console.WriteLine("Closing client..");
-                }
-        }
-        
-         /*
-        public void ReceiveFile()
-        {
-            //1. Recibimos el header para ver el nombre y largo del archivo
-            //2. Recibo el nombre del archivo
-            //3. Calculo partes a recibir
-            //4. Recibo archivos por partes
-            
-            var header = _networkStreamHandler.Read(Header.GetLength());
-            var fileNameSize = BitConverter.ToInt32(header, 0);
-            var fileSize = BitConverter.ToInt64(header, Specification.FixedFileNameLength);
-
-            var fileName = Encoding.UTF8.GetString(_networkStreamHandler.Read(fileNameSize));
-
-            long parts = SpecificationHelper.GetParts(fileSize);
-            long offset = 0;
-            long currentPart = 1;
-
-            while (fileSize > offset)
+            if (option.Equals("1"))
             {
-                byte[] data;
-                if (currentPart == parts)
-                {
-                    var lastPartSize = (int)(fileSize - offset);
-                    data = _networkStreamHandler.Read(lastPartSize);
-                    offset += lastPartSize;
-                }
-                else
-                {
-                    data = _networkStreamHandler.Read(Specification.MaxPacketSize);
-                    offset += Specification.MaxPacketSize;
-                }
-                _fileStreamHandler.Write(fileName, data);
-                currentPart++;
+                Console.WriteLine("Conectando al servidor...");
+                this.StartClient();
+                Console.WriteLine("Conectado al servidor");
+                this.Handler();
+                
+            }else if(option.Equals("2"))
+            {
+                Console.WriteLine("Cerrando cliente..");
             }
         }
-        */
+        
+        public void Menu1()
+        {
+            Console.WriteLine("\n........ AUTENTICACIÓN ........\n" +
+                              "(a) - Loguearse\n" +
+                              "(b) - Registrar un usuario nuevo\n"+
+                              "(exit) - Salir");
+        }
+        
+        public void Menu2()
+        {
+            Console.WriteLine("\n........ MENU PRINCIPAL ........\n" + 
+                              "(d) - Ver Lista de Usuarios\n" +
+                              "(e) - Subir una foto\n"+
+                              "(f) - Ver comentarios de una foto\n" +
+                              "(g) - Agregar un comentario a una foto\n" +
+                              "(exit) - Salir");
+        }
+        
     }
 }

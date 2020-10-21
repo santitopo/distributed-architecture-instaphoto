@@ -15,22 +15,19 @@ namespace Server
 {
     class ServerHandler
     {
-        private int clientsConnected;
         private readonly TcpListener _tcpListener;
         private readonly IFileHandler _fileHandler;
         private readonly IFileStreamHandler _fileStreamHandler;
-        private INetworkStreamHandler _networkStreamHandler;
-
+        private static UserSessionsHandler _userSessions;
         private static List<TcpClient> _clients;
         private static bool _exit; 
 
-        public ServerHandler()
+        public ServerHandler(UserSessionsHandler userSessions)
         {
-            clientsConnected = 0;
             _tcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"), 6000);
             _fileHandler = new FileHandler();
             _fileStreamHandler = new FileStreamHandler();
-
+            _userSessions = userSessions;
             _exit = false;
             _clients = new List<TcpClient>();
         }
@@ -53,7 +50,6 @@ namespace Server
                         
                         TcpClient tcpClientTrap = new TcpClient(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 0));
                         tcpClientTrap.Connect(IPAddress.Parse("127.0.0.1"), 6000);
-
                         break;
                     default:
                         Console.WriteLine("Opcion incorrecta ingresada");
@@ -101,21 +97,40 @@ namespace Server
                         case CommandConstants.Login:
                             Console.WriteLine("Login...");
                             string[] loginData = header.IData.Split("#");
-                            Console.WriteLine("User: {0} ", loginData[0]);
-                            Console.WriteLine("Password: {0}", loginData[1]);
+                            //AccesoConcurrente
+                            User user = _userSessions.FindUserByUsernamePassword(loginData[0], loginData[1]);
+                            if (user != null)
+                            {
+                                if (!user.IsLogued)
+                                {
+                                    user.IsLogued = true; //(AccesoConcurrente)
+                                    Send(networkStream, CommandConstants.OK, "");
+                                }
+                                else
+                                {
+                                    string message = "La sesion ya esta iniciada para el usuario " + loginData[0];
+                                    Send(networkStream, CommandConstants.Error, message);
+                                }
+                            }
+                            else
+                            {
+                                string message = "El usuario no existe";
+                                Send(networkStream, CommandConstants.Error, message);
+                            }
                             break;
                         case CommandConstants.ListUsers:
-                            Console.WriteLine("List Users...");
+                            Console.WriteLine("Listar Usuarios...");
                             break;
                         case CommandConstants.Message:
-                            Console.WriteLine("Message.. ");
+                            Console.WriteLine("Mensaje.. ");
                             break;
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-                // ignored
+                if(!_exit)
+                    Console.WriteLine(e.Message);
             }
         }
 
@@ -132,31 +147,50 @@ namespace Server
                     }
                     totalReceived += received;
                 }
-                
+
                 //Desencripto el comando
                 header.DecodeData(command);
-                
-                //Creo un array de tamaño "length" para recibir el string
-                var data = new byte[header.IDataLength];    
-                totalReceived = 0;
-                
-                //Comienzo a recibir el string (si es que hay datos)
-                while (totalReceived < header.IDataLength)
-                {
-                    var received = networkStream.Read(data, totalReceived, header.IDataLength - totalReceived);
-                    if (received == 0)
-                    {
-                        throw new SocketException();
-                    }
-                    totalReceived += received;
-                }
 
-                header.IData = Encoding.UTF8.GetString(data);
+                if (header.IDataLength > 0)
+                {
+                    //Creo un array de tamaño "length" para recibir el string
+                    var data = new byte[header.IDataLength];    
+                    totalReceived = 0;
+                
+                    //Comienzo a recibir el string (si es que hay datos)
+                    while (totalReceived < header.IDataLength)
+                    {
+                        var received = networkStream.Read(data, totalReceived, header.IDataLength - totalReceived);
+                        if (received == 0)
+                        {
+                            throw new SocketException();
+                        }
+                        totalReceived += received;
+                    }
+
+                    header.IData = Encoding.UTF8.GetString(data);
+                }
         }
         
+        public void Send(NetworkStream networkStream, int command, string message)
+        {
+            var header = new Header(HeaderConstants.Response, command, message.Length);  //REQ030004
+            var data = header.GetRequest();  //REQ030004 escrito en bytes
+            
+            //Comienzo a enviar datos
+            //Le mando al servidor: 1. El comando
+            //                      2. El data del comando (si es que existe)
+            networkStream.Write(data, 0, data.Length);
+            if (message.Length > 0)
+            {
+                networkStream.Write(Encoding.UTF8.GetBytes(message), 0, message.Length);
+            }
+        }
+        
+        /*
         public void Send(string command, NetworkStream networkStream)
         {
-            //Comienzo a enviar datos
+                    //Comienzo a enviar datos
                     //La encripto
                     byte[] data = Encoding.UTF8.GetBytes(command);
                     byte[] dataLength = BitConverter.GetBytes(data.Length);
@@ -166,6 +200,6 @@ namespace Server
                     networkStream.Write(dataLength, 0, 4);
                     networkStream.Write(data, 0, data.Length);
         }
-        
+        */
     }
 }
