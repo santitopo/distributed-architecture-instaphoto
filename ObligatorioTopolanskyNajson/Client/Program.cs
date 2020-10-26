@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Config;
 
 namespace Client
 {
@@ -7,6 +8,7 @@ namespace Client
         static void Main(string[] args)
         {
             Console.WriteLine("Starting client");
+            Config.StartConfiguration();
             var clientHandler = new ClientHandler();
             clientHandler.Menu0();
         }

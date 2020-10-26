@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using Common.Config;
 using Common.FileHandler;
 using Common.FileHandler.Interfaces;
 
@@ -10,6 +11,7 @@ namespace Server
         private static void Main(string[] args)
         {
             Console.WriteLine("Booting up server...");
+            Config.StartConfiguration();
             UserSessionsHandler userSessions = new UserSessionsHandler();
             LoadSessions(userSessions);
             var serverHandler = new ServerHandler(userSessions);

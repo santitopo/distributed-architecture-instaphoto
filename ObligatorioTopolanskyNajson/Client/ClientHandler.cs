@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Common.Config;
 using Common.FileHandler;
 using Common.FileHandler.Interfaces;
 using Common.NetworkUtils;
@@ -19,16 +20,17 @@ namespace Client
         private INetworkStreamHandler _networkStreamHandler;
         private NetworkStream _networkStream;
         private static bool _keepConnection;
+        
         public ClientHandler()
         {
-            _tcpClient = new TcpClient(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 0));
+            _tcpClient = new TcpClient(new IPEndPoint(IPAddress.Parse(Config.Ipclient), Convert.ToInt32(Config.Portclient)));
             _fileStreamHandler = new FileStreamHandler();
 
         }
 
         public void StartClient()
         {
-            _tcpClient.Connect(IPAddress.Parse("127.0.0.1"), 6000);
+            _tcpClient.Connect(IPAddress.Parse(Config.Ipserver), Convert.ToInt32(Config.Portserver));
             _networkStreamHandler = new NetworkStreamHandler(_tcpClient.GetStream());
             _networkStream = _tcpClient.GetStream();
         }
@@ -145,6 +147,7 @@ namespace Client
                         RegisterFunction();
                         break;
                     case "exit":
+                        ExitFunction();
                         _keepConnection = false;
                         break;
                 }
@@ -153,7 +156,7 @@ namespace Client
         }
         private void LoginFunction()
         {
-            Console.WriteLine("\nIngrese usuario y contraseña:\n");
+            Console.WriteLine("\nIngrese usuario y contraseña separados por '#':\n");
             string input = Console.ReadLine();
             Send(CommandConstants.Login, input);
             Header header = new Header();
@@ -175,7 +178,11 @@ namespace Client
             Send(CommandConstants.Register, input);
             Header header = new Header();
             Receive(header);
-            if (header.ICommand == CommandConstants.Error)
+            if (header.ICommand == CommandConstants.OK)
+            {
+                Console.WriteLine(header.IData);
+            } 
+            else
             {
                 Console.WriteLine("Error: {0}", header.IData);
             }
@@ -209,12 +216,18 @@ namespace Client
                         AddCommentFunction();
                         break;
                     case "exit":
+                        ExitFunction();
                         _keepConnection = false;
                         break;
                 }
             }
    
             
+        }
+
+        private void ExitFunction()
+        {
+            Send(CommandConstants.Exit, "");
         }
 
         private void AddCommentFunction()

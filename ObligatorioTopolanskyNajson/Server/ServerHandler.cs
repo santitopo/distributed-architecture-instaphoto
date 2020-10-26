@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Common.Config;
 using Common.FileHandler;
 using Common.FileHandler.Interfaces;
 using Common.NetworkUtils;
@@ -20,11 +21,14 @@ namespace Server
         private readonly IFileStreamHandler _fileStreamHandler;
         private static UserSessionsHandler _userSessions;
         private static List<TcpClient> _clients;
-        private static bool _exit; 
+        private static bool _exit;
+
+        
 
         public ServerHandler(UserSessionsHandler userSessions)
         {
-            _tcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"), 6000);
+            
+            _tcpListener = new TcpListener(IPAddress.Parse(Config.Ipserver), Convert.ToInt32(Config.Portserver));
             _fileHandler = new FileHandler();
             _fileStreamHandler = new FileStreamHandler();
             _userSessions = userSessions;
@@ -48,8 +52,8 @@ namespace Server
                     case "exit":
                         _exit = true;
                         
-                        TcpClient tcpClientTrap = new TcpClient(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 0));
-                        tcpClientTrap.Connect(IPAddress.Parse("127.0.0.1"), 6000);
+                        TcpClient tcpClientTrap = new TcpClient(new IPEndPoint(IPAddress.Parse(Config.Ipclient), Convert.ToInt32(Config.Portclient)));
+                        tcpClientTrap.Connect(IPAddress.Parse(Config.Ipserver), Convert.ToInt32(Config.Portserver));
                         break;
                     default:
                         Console.WriteLine("Opcion incorrecta ingresada");
@@ -63,16 +67,20 @@ namespace Server
             while(!_exit)
             {
                 var tcpClientSocket = _tcpListener.AcceptTcpClient(); // Gets the first client in the queue
-                _clients.Add(tcpClientSocket);
+                lock (_userSessions)
+                {
+                    _userSessions.Sessions.Add(tcpClientSocket, null);    //Insert new client without login
+                }
                 new Thread(() => Handler(tcpClientSocket)).Start(); //Agarro el cliente y lo meto en un hilo
-                Console.WriteLine("New client connected");
+                Console.WriteLine("New client connected...  Total: {0}", _userSessions.Sessions.Count);
             }
             
             Console.WriteLine("Disconnecting Server");
-            foreach (var client in _clients)
+            foreach (var client in _userSessions.Sessions)
             {
-                client.GetStream().Close();
-                client.Close();
+                TcpClient socket = client.Key;
+                socket.GetStream().Close();
+                socket.Close();
             }
             
             _tcpListener.Stop();
@@ -82,37 +90,39 @@ namespace Server
         {    
             try
             {
-                var networkStream = tcpClient.GetStream();
-                while (!_exit)
+                bool localExit = false;
+                while (!_exit && !localExit)
                 {
                     var headerLength = HeaderConstants.Request.Length +
                                        HeaderConstants.CommandLength +
                                        HeaderConstants.DataLength;
 
                     var header = new Header();
-                    Receive(networkStream, header);  //La data entrante se guarda en el header
+                    Receive(tcpClient.GetStream(), header);  //La data entrante se guarda en el header
 
                     switch (header.ICommand)
                     {
                         case CommandConstants.Login:
-                            LoginFunction(networkStream, header);
+                            LoginFunction(tcpClient, header);
                             break;
                         case CommandConstants.Register:
-                            RegisterFunction(networkStream, header);
+                            RegisterFunction(tcpClient, header);
                             break;
                         case CommandConstants.ListUsers:
-                            ListUserFunction(networkStream, header);
+                            ListUserFunction(tcpClient, header);
                             break;
                         case CommandConstants.UploadPicture:
-                            UploadPictureFunction(networkStream, header);
+                            UploadPictureFunction(tcpClient, header);
                             break;
                         case CommandConstants.GetComment:
-                            GetCommentFunction(networkStream, header);
+                            GetCommentFunction(tcpClient, header);
                             break;
                         case CommandConstants.AddComment:
-                            AddCommentFunction(networkStream, header);
+                            AddCommentFunction(tcpClient, header);
                             break;
-
+                        case CommandConstants.Exit:
+                            localExit = ClientExitFunction(tcpClient);
+                            break;
                     }
                 }
             }
@@ -123,22 +133,55 @@ namespace Server
             }
         }
 
-        private void LoginFunction(NetworkStream networkStream, Header header)
+        private bool ClientExitFunction(TcpClient tcpClient)
         {
-            Console.WriteLine("Login...");
+            //Find user in map
+            User disconnectedUser;
+            _userSessions.Sessions.TryGetValue(tcpClient, out disconnectedUser);
+            
+            //Disconnecting client
+            if (disconnectedUser != null)
+            {
+                Console.WriteLine("Desconectando cliente: {0} \n", disconnectedUser.UserName);
+                disconnectedUser.IsLogued = false;
+            }
+            else
+            {
+                Console.WriteLine("Desconectando cliente no identificado... \n");
+            }
+            
+            _userSessions.Sessions.Remove(tcpClient);
+            tcpClient.GetStream().Close();
+            tcpClient.Close();
+            
+            return true;
+        }
+
+        private void LoginFunction(TcpClient tcpClient, Header header)
+        {
+            var networkStream = tcpClient.GetStream();
             string[] loginData = header.IData.Split("#");
-            //AccesoConcurrente
-            User user = _userSessions.FindUserByUsernamePassword(loginData[0], loginData[1]);
+            
+            User user;
+            lock (_userSessions)
+            {
+                 user = _userSessions.FindUserByUsernamePassword(loginData[0], loginData[1]);
+            }
+            
             if (user != null)
             {
                 if (!user.IsLogued)
                 {
-                    user.IsLogued = true; //(AccesoConcurrente)
+                    user.IsLogued = true; 
+                    lock (_userSessions)
+                    {
+                        _userSessions.Sessions[tcpClient] = user;
+                    }
                     Send(networkStream, CommandConstants.OK, "");
                 }
                 else
                 {
-                    string message = "La sesion ya esta iniciada para el usuario " + loginData[0];
+                    string message = "La sesión ya esta iniciada para el usuario " + loginData[0];
                     Send(networkStream, CommandConstants.Error, message);
                 }
             }
@@ -148,29 +191,46 @@ namespace Server
                 Send(networkStream, CommandConstants.Error, message);
             }
         }
-        private void AddCommentFunction(NetworkStream networkStream, Header header)
+        private void RegisterFunction(TcpClient tcpClient, Header header)
+        {
+            string[] registerData = header.IData.Split("#");
+            
+            User user = new User(registerData[0],registerData[1], registerData[2], registerData[3]);
+            
+            lock (_userSessions.Users)
+            {
+                if (_userSessions.FindUserByUsername(user.UserName) == null)
+                {
+                    _userSessions.Users.Add(user);
+                    string message = "Usuario registrado correctamente";
+                    Send(tcpClient.GetStream(), CommandConstants.OK,message);
+                }
+                else
+                {
+                    string message = "El nombre de usuario "+ user.UserName +" ya esta en uso";
+                    Send(tcpClient.GetStream(), CommandConstants.Error,message );
+                }
+                    
+            }
+        }
+        private void AddCommentFunction(TcpClient tcpClient, Header header)
         {
             throw new NotImplementedException();
         }
-        private void GetCommentFunction(NetworkStream networkStream, Header header)
+        private void GetCommentFunction(TcpClient tcpClient, Header header)
         {
             throw new NotImplementedException();
         }
-        private void UploadPictureFunction(NetworkStream networkStream, Header header)
+        private void UploadPictureFunction(TcpClient tcpClient, Header header)
         {
             throw new NotImplementedException();
         }
-        private void ListUserFunction(NetworkStream networkStream, Header header)
+        private void ListUserFunction(TcpClient tcpClient, Header header)
         {
             throw new NotImplementedException();
         }
-        private void RegisterFunction(NetworkStream networkStream, Header header)
-        {
-            throw new NotImplementedException();
-        }
+        
 
-        
-        
         public void Receive(NetworkStream networkStream, Header header)
         {
                 var command = new byte[9];    //Protocol.WordLength == 9

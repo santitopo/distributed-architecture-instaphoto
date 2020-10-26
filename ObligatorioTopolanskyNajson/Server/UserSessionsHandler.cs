@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Net.Sockets;
 
 namespace Server
 {
     public class UserSessionsHandler
     {
         public List<User> Users { get; set; }
-
+        public Dictionary<TcpClient, User> Sessions;
         public UserSessionsHandler()
         {
+            Sessions = new Dictionary<TcpClient, User>();
             Users = new List<User>();
         }
         
@@ -17,6 +19,18 @@ namespace Server
             foreach (var user in Users)
             {
                 if (user.UserName.Equals(aUserName) && user.Password.Equals(aPassword))
+                    aUser = user;
+            }
+
+            return aUser;
+        }
+        
+        public User FindUserByUsername(string aUserName)
+        {
+            User aUser = null;
+            foreach (var user in Users)
+            {
+                if (user.UserName.Equals(aUserName))
                     aUser = user;
             }
 

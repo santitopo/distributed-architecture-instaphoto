@@ -1,0 +1,4 @@
+ipserver:127.0.0.1
+portserver:6000
+ipclient:127.0.0.1
+portclient:0
