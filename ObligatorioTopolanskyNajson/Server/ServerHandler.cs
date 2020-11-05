@@ -4,13 +4,18 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
+using System.Threading.Tasks;
 using Common.Config;
 using Common.FileHandler;
 using Common.FileHandler.Interfaces;
 using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
+using Common.Protocol;
 using ProtocolLibrary;
+using RabbitMQ.Client;
+using Shared;
 
 namespace Server
 {
@@ -120,6 +125,9 @@ namespace Server
                         case CommandConstants.AddComment:
                             AddCommentFunction(tcpClient, header);
                             break;
+                        case CommandConstants.GenerateLog:
+                            GenerateLog(tcpClient, header);
+                            break;
                         case CommandConstants.Exit:
                             localExit = ClientExitFunction(tcpClient);
                             break;
@@ -132,6 +140,49 @@ namespace Server
                     Console.WriteLine(e.Message);
             }
         }
+
+        private async Task GenerateLog(TcpClient tcpClient, Header header)
+        {
+            
+            var channel = new ConnectionFactory() {HostName = "localhost"}.CreateConnection().CreateModel();
+            channel.QueueDeclare(queue: "log_queue",
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
+
+            string[] logInfo = header.IData.Split("#");
+
+            var log = new Log();
+            log.Level = logInfo[0];
+            log.Message = logInfo[1];
+            log.DateTime = DateTime.Now;
+            
+            var stringLog = JsonSerializer.Serialize(log);
+            await SendMessage(channel, stringLog);
+        }
+        
+        private static Task<bool> SendMessage(IModel channel, string message)
+        {
+            bool returnVal;
+            try
+            {
+                var body = Encoding.UTF8.GetBytes(message);
+                channel.BasicPublish(exchange: "",
+                    routingKey: "log_queue",
+                    basicProperties: null,
+                    body: body);
+                returnVal = true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                returnVal = false;
+            }
+
+            return Task.FromResult(returnVal);
+        }
+
 
         private bool ClientExitFunction(TcpClient tcpClient)
         {
@@ -223,7 +274,37 @@ namespace Server
         }
         private void UploadPictureFunction(TcpClient tcpClient, Header header)
         {
-            throw new NotImplementedException();
+                NetworkStreamHandler networkStreamHandler = new NetworkStreamHandler(tcpClient.GetStream());
+            
+                //1. Recibimos el header para ver el nombre y largo del archivo
+                string[] pictureInfo = header.IData.Split("#");
+                
+                var fileName = pictureInfo[0]; 
+                var fileSize = Convert.ToInt32(pictureInfo[1]); 
+
+                //2. Calculo partes a recibir
+                long parts = SpecificationHelper.GetParts(fileSize);
+                long offset = 0;
+                long currentPart = 1;
+                
+                //3. Recibo archivos por partes
+                while (fileSize > offset)
+                {
+                    byte[] data;
+                    if (currentPart == parts)
+                    {
+                        var lastPartSize = (int)(fileSize - offset);
+                        data = networkStreamHandler.Read(lastPartSize);
+                        offset += lastPartSize;
+                    }
+                    else
+                    {
+                        data = networkStreamHandler.Read(Specification.MaxPacketSize);
+                        offset += Specification.MaxPacketSize;
+                    }
+                    _fileStreamHandler.Write(fileName, data);
+                    currentPart++;
+                }
         }
         private void ListUserFunction(TcpClient tcpClient, Header header)
         {

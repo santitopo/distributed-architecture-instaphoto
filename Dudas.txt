@@ -1,7 +1,0 @@
- Dudas
----------------------------------------
-- El flujo pensado es el correcto?
-       Se escriben los comandos directamente o mensajes lindos para despues transformarlos en comandos?
-       Como se pasan los parametros? Ya dentro del comando o despues de la respuesta del server? 
-
-- Como se realiza la conexion de dos vias (enviar y recibir al mismo tiempo)?

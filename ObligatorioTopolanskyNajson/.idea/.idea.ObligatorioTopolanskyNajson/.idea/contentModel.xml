@@ -31,6 +31,9 @@
             <e p="IFileStreamHandler.cs" t="Include" />
           </e>
         </e>
+        <e p="Logs" t="Include">
+          <e p="Log.cs" t="Include" />
+        </e>
         <e p="NetworkUtils" t="Include">
           <e p="Interfaces" t="Include">
             <e p="INetworkStreamHandler.cs" t="Include" />
@@ -49,7 +52,21 @@
           <e p="CommandConstants.cs" t="Include" />
           <e p="Header.cs" t="Include" />
           <e p="HeaderConstants.cs" t="Include" />
+          <e p="Specification.cs" t="Include" />
+          <e p="SpecificationHelper.cs" t="Include" />
         </e>
+      </e>
+      <e p="LogsServer" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="LogsServer.csproj" t="IncludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="LogsServer.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
       </e>
       <e p="ObligatorioTopolanskyNajson.sln" t="IncludeFlat" />
       <e p="packages" t="ExcludeRecursive" />

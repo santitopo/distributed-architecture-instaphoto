@@ -8,6 +8,7 @@ using Common.FileHandler;
 using Common.FileHandler.Interfaces;
 using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
+using Common.Protocol;
 using ProtocolLibrary;
 
 namespace Client
@@ -17,6 +18,7 @@ namespace Client
         
         private readonly TcpClient _tcpClient;
         private readonly IFileStreamHandler _fileStreamHandler;
+        private readonly IFileHandler _fileHandler;
         private INetworkStreamHandler _networkStreamHandler;
         private NetworkStream _networkStream;
         private static bool _keepConnection;
@@ -24,6 +26,7 @@ namespace Client
         public ClientHandler()
         {
             _tcpClient = new TcpClient(new IPEndPoint(IPAddress.Parse(Config.Ipclient), Convert.ToInt32(Config.Portclient)));
+            _fileHandler = new FileHandler();
             _fileStreamHandler = new FileStreamHandler();
 
         }
@@ -159,11 +162,12 @@ namespace Client
             Console.WriteLine("\nIngrese usuario y contraseña separados por '#':\n");
             string input = Console.ReadLine();
             Send(CommandConstants.Login, input);
+            Send(CommandConstants.GenerateLog, "1#Ingreso Usuario Nuevo");
             Header header = new Header();
             Receive(header);
             if (header.ICommand == CommandConstants.OK)
             {
-                Menu2();  //Meterse en otro switch
+                Menu2();  
             }
             else
             {
@@ -240,11 +244,51 @@ namespace Client
             throw new NotImplementedException();
         }
 
-        private void UploadPictureFunction()
+        public void UploadPictureFunction()
         {
-            throw new NotImplementedException();
-        }
+            Console.WriteLine("Ingrese la ruta completa de la foto a transferir:");
+            string path = string.Empty;
+            IFileHandler fileHandler = new FileHandler();
+            while(path != null && path.Equals(string.Empty) && !fileHandler.FileExists(path))
+            {
+                path = Console.ReadLine();
+            }
+            
+            //1. Obtenemos nombre y largo del archivo
+            long fileSize = _fileHandler.GetFileSize(path);
+            string fileName = _fileHandler.GetFileName(path);
 
+            string fileInfo = fileName +"#"+ fileSize;
+            
+            //2. Envio el nombre y tamaño del archivo
+             Send(CommandConstants.UploadPicture, fileInfo);
+
+            //4. Envio el archivo de a partes (cada paerte 32kb o menos)
+            long parts = SpecificationHelper.GetParts(fileSize);
+            Console.WriteLine("Will Send {0} parts",parts);
+            long offset = 0;
+            long currentPart = 1;
+
+            while (fileSize > offset)
+            {
+                byte[] data;
+                if (currentPart == parts)
+                {
+                    var lastPartSize = (int)(fileSize - offset);
+                    data = _fileStreamHandler.Read(path, offset, lastPartSize);
+                    offset += lastPartSize;
+                }
+                else
+                {
+                    data = _fileStreamHandler.Read(path, offset, Specification.MaxPacketSize);
+                    offset += Specification.MaxPacketSize;
+                }
+
+                _networkStreamHandler.Write(data);
+                currentPart++;
+            }
+        }
+        
         private void ListUsersFunction()
         {
             throw new NotImplementedException();

@@ -1,12 +1,12 @@
-﻿﻿using System;
+﻿using System;
 
-namespace Common
+namespace ConsoleArchiveSender
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            
         }
     }
 }

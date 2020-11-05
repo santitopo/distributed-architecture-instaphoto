@@ -9,7 +9,8 @@ namespace ProtocolLibrary
         public const int GetComment = 5;
         public const int AddComment = 6;
         public const int Exit = 7;
-        
+        public const int GenerateLog = 8;
+
         public const int Error = 99;
         public const int OK = 0;
     }
