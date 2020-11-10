@@ -125,9 +125,6 @@ namespace Server
                         case CommandConstants.AddComment:
                             AddCommentFunction(tcpClient, header);
                             break;
-                        case CommandConstants.GenerateLog:
-                            GenerateLog(tcpClient, header);
-                            break;
                         case CommandConstants.Exit:
                             localExit = ClientExitFunction(tcpClient);
                             break;
@@ -141,9 +138,8 @@ namespace Server
             }
         }
 
-        private async Task GenerateLog(TcpClient tcpClient, Header header)
+        private void GenerateLog(string message, string level)
         {
-            
             var channel = new ConnectionFactory() {HostName = "localhost"}.CreateConnection().CreateModel();
             channel.QueueDeclare(queue: "log_queue",
                 durable: false,
@@ -151,15 +147,13 @@ namespace Server
                 autoDelete: false,
                 arguments: null);
 
-            string[] logInfo = header.IData.Split("#");
-
             var log = new Log();
-            log.Level = logInfo[0];
-            log.Message = logInfo[1];
+            log.Level = level;
+            log.Message = message;
             log.DateTime = DateTime.Now;
             
             var stringLog = JsonSerializer.Serialize(log);
-            await SendMessage(channel, stringLog);
+            SendMessage(channel, stringLog);
         }
         
         private static Task<bool> SendMessage(IModel channel, string message)
@@ -233,6 +227,7 @@ namespace Server
                 else
                 {
                     string message = "La sesión ya esta iniciada para el usuario " + loginData[0];
+                    GenerateLog(message, LogConstants.Info);
                     Send(networkStream, CommandConstants.Error, message);
                 }
             }
@@ -302,9 +297,14 @@ namespace Server
                         data = networkStreamHandler.Read(Specification.MaxPacketSize);
                         offset += Specification.MaxPacketSize;
                     }
-                    _fileStreamHandler.Write(fileName, data);
+
+                    string path = Config.ImagesFolder + fileName;
+                    
+                    _fileStreamHandler.Write(path, data);
                     currentPart++;
                 }
+                
+                Console.WriteLine("Imagen: {0} recibida...", fileName);
         }
         private void ListUserFunction(TcpClient tcpClient, Header header)
         {

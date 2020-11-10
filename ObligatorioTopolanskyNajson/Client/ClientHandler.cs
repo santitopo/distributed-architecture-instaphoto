@@ -162,7 +162,6 @@ namespace Client
             Console.WriteLine("\nIngrese usuario y contraseña separados por '#':\n");
             string input = Console.ReadLine();
             Send(CommandConstants.Login, input);
-            Send(CommandConstants.GenerateLog, "1#Ingreso Usuario Nuevo");
             Header header = new Header();
             Receive(header);
             if (header.ICommand == CommandConstants.OK)
@@ -247,10 +246,13 @@ namespace Client
         public void UploadPictureFunction()
         {
             Console.WriteLine("Ingrese la ruta completa de la foto a transferir:");
-            string path = string.Empty;
+            string path = Console.ReadLine();
+            
+            
             IFileHandler fileHandler = new FileHandler();
-            while(path != null && path.Equals(string.Empty) && !fileHandler.FileExists(path))
+            while(path == null || path.Equals(string.Empty) || !fileHandler.FileExists(path))
             {
+                Console.WriteLine("Ruta invalida, vuelva a ingresar una ruta correcta...");
                 path = Console.ReadLine();
             }
             
@@ -265,7 +267,6 @@ namespace Client
 
             //4. Envio el archivo de a partes (cada paerte 32kb o menos)
             long parts = SpecificationHelper.GetParts(fileSize);
-            Console.WriteLine("Will Send {0} parts",parts);
             long offset = 0;
             long currentPart = 1;
 
@@ -287,6 +288,7 @@ namespace Client
                 _networkStreamHandler.Write(data);
                 currentPart++;
             }
+            Console.WriteLine("Imagen: {0} enviada...", fileName);
         }
         
         private void ListUsersFunction()

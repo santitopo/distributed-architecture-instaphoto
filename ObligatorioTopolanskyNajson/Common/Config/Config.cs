@@ -8,6 +8,7 @@ namespace Common.Config
         public static string Portserver;
         public static string Ipclient;
         public static string Portclient;
+        public static string ImagesFolder;
 
         public static void StartConfiguration()
         {
@@ -25,6 +26,7 @@ namespace Common.Config
             Portserver = values["portserver"];
             Ipclient = values["ipclient"];
             Portclient = values["portclient"];
+            ImagesFolder = values["imagesFolder"];
         }
     }
 }
