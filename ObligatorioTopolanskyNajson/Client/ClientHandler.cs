@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using Common.Config;
 using Common.FileHandler;
 using Common.FileHandler.Interfaces;
@@ -10,6 +13,8 @@ using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ProtocolLibrary;
+using Server;
+using Shared;
 
 namespace Client
 {
@@ -198,8 +203,9 @@ namespace Client
                 Console.WriteLine("\n........ MENU PRINCIPAL ........\n" + 
                                   "(a) - Ver Lista de Usuarios\n" +
                                   "(b) - Subir una foto\n"+
-                                  "(c) - Ver comentarios de una foto\n" +
-                                  "(d) - Agregar un comentario a una foto\n" +
+                                  "(c) - Ver fotos de un usuario\n"+
+                                  "(d) - Ver comentarios de una foto\n" +
+                                  "(e) - Agregar un comentario a una foto\n" +
                                   "(exit) - Desconectarse");
                 
                 string input = Console.ReadLine();
@@ -213,9 +219,12 @@ namespace Client
                         UploadPictureFunction();
                         break;
                     case "c":
-                        GetCommentsFunction();
+                        GetPhotosFunction();
                         break; 
                     case "d":
+                        GetCommentsFunction();
+                        break;
+                    case "e":
                         AddCommentFunction();
                         break;
                     case "exit":
@@ -226,6 +235,28 @@ namespace Client
             }
    
             
+        }
+
+        private void GetPhotosFunction()
+        {
+            Console.WriteLine("\nIngrese el usuario el cual desea ver las fotos:\n");
+            string username = Console.ReadLine();
+            Send(CommandConstants.ListPhotos, username);
+            Header header = new Header();
+            Receive(header);
+            if (header.ICommand == CommandConstants.OK)
+            {
+                Console.WriteLine("Mostrando fotos del usuario: {0} \n", username);
+                var photos = JsonSerializer.Deserialize<List<string>>(header.IData);
+                foreach (var photoName in photos)
+                {
+                    Console.WriteLine("- {0}", photoName);
+                }
+            } 
+            else
+            {
+                Console.WriteLine("Error: {0}", header.IData);
+            }
         }
 
         private void ExitFunction()
@@ -240,7 +271,24 @@ namespace Client
 
         private void GetCommentsFunction()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("\nIngrese el usuario y nombre de la foto el cual desea ver los comentarios separados por # :\n");
+            string data = Console.ReadLine();
+            Send(CommandConstants.GetComments, data);
+            Header header = new Header();
+            Receive(header);
+            Console.WriteLine("Mostrando los comentarios de la foto: {0} \n", data.Split("#")[1]);
+            if (header.ICommand == CommandConstants.OK)
+            {
+                var comments = JsonSerializer.Deserialize<List<string>>(header.IData);
+                foreach (var comment in comments)
+                {
+                    Console.WriteLine(comment);
+                }
+            } 
+            else
+            {
+                Console.WriteLine("Error: {0}", header.IData);
+            }
         }
 
         public void UploadPictureFunction()
@@ -293,7 +341,26 @@ namespace Client
         
         private void ListUsersFunction()
         {
-            throw new NotImplementedException();
+            Send(CommandConstants.ListUsers, "");
+            Header header = new Header();
+            Receive(header);
+            Console.WriteLine("Usuarios Conectados:\n");
+            if (header.ICommand == CommandConstants.OK)
+            {
+                var sessions = JsonSerializer.Deserialize<List<User>>(header.IData);
+                foreach (var user in sessions)
+                {
+                    if (user != null)
+                    {
+                        Console.WriteLine("Usuario: {0} | Conexion: {1} ",user.UserName,user.LastConnection);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Error: {0}", header.IData);
+            }
+            
         }
     }
 }

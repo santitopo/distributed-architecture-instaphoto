@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -22,23 +23,18 @@ namespace Server
     class ServerHandler
     {
         private readonly TcpListener _tcpListener;
-        private readonly IFileHandler _fileHandler;
         private readonly IFileStreamHandler _fileStreamHandler;
-        private static UserSessionsHandler _userSessions;
-        private static List<TcpClient> _clients;
+        private static Repository _repository;
         private static bool _exit;
 
         
 
-        public ServerHandler(UserSessionsHandler userSessions)
+        public ServerHandler(Repository repository)
         {
-            
             _tcpListener = new TcpListener(IPAddress.Parse(Config.Ipserver), Convert.ToInt32(Config.Portserver));
-            _fileHandler = new FileHandler();
             _fileStreamHandler = new FileStreamHandler();
-            _userSessions = userSessions;
+            _repository = repository;
             _exit = false;
-            _clients = new List<TcpClient>();
         }
 
         public void StartServer()
@@ -72,16 +68,16 @@ namespace Server
             while(!_exit)
             {
                 var tcpClientSocket = _tcpListener.AcceptTcpClient(); // Gets the first client in the queue
-                lock (_userSessions)
+                lock (_repository)
                 {
-                    _userSessions.Sessions.Add(tcpClientSocket, null);    //Insert new client without login
+                    _repository.Sessions.Add(tcpClientSocket, null);    //Insert new client without login
                 }
                 new Thread(() => Handler(tcpClientSocket)).Start(); //Agarro el cliente y lo meto en un hilo
-                Console.WriteLine("New client connected...  Total: {0}", _userSessions.Sessions.Count);
+                Console.WriteLine("New client connected...  Total: {0}", _repository.Sessions.Count);
             }
             
             Console.WriteLine("Disconnecting Server");
-            foreach (var client in _userSessions.Sessions)
+            foreach (var client in _repository.Sessions)
             {
                 TcpClient socket = client.Key;
                 socket.GetStream().Close();
@@ -119,7 +115,10 @@ namespace Server
                         case CommandConstants.UploadPicture:
                             UploadPictureFunction(tcpClient, header);
                             break;
-                        case CommandConstants.GetComment:
+                        case CommandConstants.ListPhotos:
+                            ListPhotos(tcpClient, header);
+                            break;
+                        case CommandConstants.GetComments:
                             GetCommentFunction(tcpClient, header);
                             break;
                         case CommandConstants.AddComment:
@@ -136,6 +135,26 @@ namespace Server
                 if(!_exit)
                     Console.WriteLine(e.Message);
             }
+        }
+
+        private void ListPhotos(TcpClient tcpClient, Header header)
+        {
+            string[] data = header.IData.Split("#");
+            string username = data[0];
+
+            List<Photo> associatedPhotos;
+            lock (_repository.Photos)
+            {
+                associatedPhotos = _repository.FindPhotosByUsername(username);
+            }
+
+            List<string> photoName = new List<string>();
+            foreach (var photo in associatedPhotos)
+            {
+                photoName.Add(photo.Name);
+            }
+            
+            Send(tcpClient.GetStream(), CommandConstants.OK, JsonSerializer.Serialize(photoName));
         }
 
         private void GenerateLog(string message, string level)
@@ -155,7 +174,6 @@ namespace Server
             var stringLog = JsonSerializer.Serialize(log);
             SendMessage(channel, stringLog);
         }
-        
         private static Task<bool> SendMessage(IModel channel, string message)
         {
             bool returnVal;
@@ -176,13 +194,11 @@ namespace Server
 
             return Task.FromResult(returnVal);
         }
-
-
         private bool ClientExitFunction(TcpClient tcpClient)
         {
             //Find user in map
             User disconnectedUser;
-            _userSessions.Sessions.TryGetValue(tcpClient, out disconnectedUser);
+            _repository.Sessions.TryGetValue(tcpClient, out disconnectedUser);
             
             //Disconnecting client
             if (disconnectedUser != null)
@@ -195,22 +211,21 @@ namespace Server
                 Console.WriteLine("Desconectando cliente no identificado... \n");
             }
             
-            _userSessions.Sessions.Remove(tcpClient);
+            _repository.Sessions.Remove(tcpClient);
             tcpClient.GetStream().Close();
             tcpClient.Close();
             
             return true;
         }
-
         private void LoginFunction(TcpClient tcpClient, Header header)
         {
             var networkStream = tcpClient.GetStream();
             string[] loginData = header.IData.Split("#");
             
             User user;
-            lock (_userSessions)
+            lock (_repository)
             {
-                 user = _userSessions.FindUserByUsernamePassword(loginData[0], loginData[1]);
+                 user = _repository.FindUserByUsernamePassword(loginData[0], loginData[1]);
             }
             
             if (user != null)
@@ -218,9 +233,10 @@ namespace Server
                 if (!user.IsLogued)
                 {
                     user.IsLogued = true; 
-                    lock (_userSessions)
+                    user.LastConnection = DateTime.Now;
+                    lock (_repository)
                     {
-                        _userSessions.Sessions[tcpClient] = user;
+                        _repository.Sessions[tcpClient] = user;
                     }
                     Send(networkStream, CommandConstants.OK, "");
                 }
@@ -240,14 +256,14 @@ namespace Server
         private void RegisterFunction(TcpClient tcpClient, Header header)
         {
             string[] registerData = header.IData.Split("#");
-            
             User user = new User(registerData[0],registerData[1], registerData[2], registerData[3]);
             
-            lock (_userSessions.Users)
+            lock (_repository.Users)
             {
-                if (_userSessions.FindUserByUsername(user.UserName) == null)
+                if (_repository.FindUserByUsername(user.UserName) == null)
                 {
-                    _userSessions.Users.Add(user);
+                    _repository.Users.Add(user);
+                    _repository.Photos.Add(user, new List<Photo>());
                     string message = "Usuario registrado correctamente";
                     Send(tcpClient.GetStream(), CommandConstants.OK,message);
                 }
@@ -265,7 +281,31 @@ namespace Server
         }
         private void GetCommentFunction(TcpClient tcpClient, Header header)
         {
-            throw new NotImplementedException();
+            string[] data = header.IData.Split("#");
+            string username = data[0];
+            string fileName = data[1];
+
+            Photo selectedPhoto;
+            lock (_repository.Photos)
+            {
+                List<Photo> associatedPhotos = _repository.FindPhotosByUsername(username);
+                selectedPhoto = associatedPhotos.Find(x => x.Name == fileName);
+            }
+
+            if (selectedPhoto != null)
+            {
+                List<string> comments = new List<string>();
+                foreach (var comment in selectedPhoto.Comments)
+                {
+                    comments.Add(comment.Key.Name +" - "+ comment.Value);
+                }
+                Send(tcpClient.GetStream(), CommandConstants.OK, JsonSerializer.Serialize(comments));
+            }
+            else
+            {
+                Send(tcpClient.GetStream(), CommandConstants.Error, "No se encontró la foto seleccionada");
+            }
+            
         }
         private void UploadPictureFunction(TcpClient tcpClient, Header header)
         {
@@ -304,13 +344,24 @@ namespace Server
                     currentPart++;
                 }
                 
+                //Add new photo to the repo
+                Photo photo = new Photo(fileName,Config.ImagesFolder + fileName);
+                lock (_repository)
+                {
+                    User user = _repository.Sessions[tcpClient];
+                    List<Photo> asocciatedPhotos = _repository.Photos[user];
+                    asocciatedPhotos.Add(photo);
+                }
+
                 Console.WriteLine("Imagen: {0} recibida...", fileName);
         }
         private void ListUserFunction(TcpClient tcpClient, Header header)
         {
-            throw new NotImplementedException();
+            var networkStream = tcpClient.GetStream();
+            List<User> connectedUsers = _repository.Sessions.Values.ToList();
+            var sessions = JsonSerializer.Serialize(connectedUsers);
+            Send(networkStream, CommandConstants.OK, sessions);
         }
-        
 
         public void Receive(NetworkStream networkStream, Header header)
         {
@@ -363,7 +414,5 @@ namespace Server
                 networkStream.Write(Encoding.UTF8.GetBytes(message), 0, message.Length);
             }
         }
-
-
     }
 }

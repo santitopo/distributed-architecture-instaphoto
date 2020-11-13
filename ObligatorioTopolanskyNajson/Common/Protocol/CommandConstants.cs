@@ -6,10 +6,11 @@ namespace ProtocolLibrary
         public const int Register =  2;
         public const int ListUsers = 3;
         public const int UploadPicture = 4;
-        public const int GetComment = 5;
-        public const int AddComment = 6;
+        public const int ListPhotos = 5;
+        public const int GetComments = 6;
+        public const int AddComment = 9;
+        
         public const int Exit = 7;
-
         public const int Error = 99;
         public const int OK = 0;
     }

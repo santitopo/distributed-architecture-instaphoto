@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Common.Config;
 using Common.FileHandler;
@@ -12,18 +13,20 @@ namespace Server
         {
             Console.WriteLine("Booting up server...");
             Config.StartConfiguration();
-            UserSessionsHandler userSessions = new UserSessionsHandler();
+            Repository userSessions = new Repository();
             LoadSessions(userSessions);
             var serverHandler = new ServerHandler(userSessions);
             serverHandler.StartServer();
         }
 
-        private static void LoadSessions(UserSessionsHandler userSessions)
+        private static void LoadSessions(Repository repository)
         {
             User u1 = new User("Jose", "Hernandez", "jh12", "user");
             User u2 = new User("Martina", "Perez", "mp10", "user");
-            userSessions.Users.Add(u1);
-            userSessions.Users.Add(u2);
+            repository.Users.Add(u1);
+            repository.Users.Add(u2);
+            repository.Photos.Add(u1, new List<Photo>());
+            repository.Photos.Add(u2, new List<Photo>());
         }
     }
 }

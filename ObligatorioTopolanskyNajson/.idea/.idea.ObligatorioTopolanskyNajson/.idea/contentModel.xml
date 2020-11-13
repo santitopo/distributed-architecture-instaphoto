@@ -79,11 +79,15 @@
             </e>
           </e>
         </e>
+        <e p="Photo.cs" t="Include" />
         <e p="Program.cs" t="Include" />
+        <e p="Repository.cs" t="Include" />
         <e p="Server.csproj" t="IncludeRecursive" />
         <e p="ServerHandler.cs" t="Include" />
-        <e p="ServerImages" t="Include" />
-        <e p="UserSessionsHandler.cs" t="Include" />
+        <e p="ServerImages" t="Include">
+          <e p="ImagenDePrueba.png" t="Include" />
+        </e>
+        <e p="User.cs" t="Include" />
       </e>
     </e>
   </component>

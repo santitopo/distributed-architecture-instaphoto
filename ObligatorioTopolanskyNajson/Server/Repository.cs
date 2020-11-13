@@ -1,18 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 
 namespace Server
 {
-    public class UserSessionsHandler
+    public class Repository
     {
         public List<User> Users { get; set; }
         public Dictionary<TcpClient, User> Sessions;
-        public UserSessionsHandler()
+        public Dictionary<User, List<Photo>> Photos;
+
+        public Repository()
         {
             Sessions = new Dictionary<TcpClient, User>();
             Users = new List<User>();
+            Photos = new Dictionary<User, List<Photo>>();
         }
-        
+
         public User FindUserByUsernamePassword(string aUserName, string aPassword)
         {
             User aUser = null;
@@ -24,7 +28,6 @@ namespace Server
 
             return aUser;
         }
-        
         public User FindUserByUsername(string aUserName)
         {
             User aUser = null;
@@ -36,30 +39,12 @@ namespace Server
 
             return aUser;
         }
+        public List<Photo> FindPhotosByUsername(string aUserName)
+        {
+            User user = FindUserByUsername(aUserName);
+            List<Photo> asocciatedPhotos = Photos[user];
+            return asocciatedPhotos;
+        }
     }
 
-    public class User
-    {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public bool IsLogued { get; set; }
-
-        public User()
-        {
-            
-        }
-
-        public User(string aName, string aSurname, string aUserName, string aPassword)
-        {
-            Name = aName;
-            Surname = aSurname;
-            UserName = aUserName;
-            Password = aPassword;
-            IsLogued = false;
-        }
-        
-        
-    }
 }
