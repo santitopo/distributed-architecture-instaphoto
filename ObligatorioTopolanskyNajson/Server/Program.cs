@@ -4,6 +4,8 @@ using System.Threading;
 using Common.Config;
 using Common.FileHandler;
 using Common.FileHandler.Interfaces;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace Server
 {
@@ -11,6 +13,7 @@ namespace Server
     {
         private static void Main(string[] args)
         {
+            CreateHostBuilder(args).Build().Run(); 
             Console.WriteLine("Booting up server...");
             Config.StartConfiguration();
             Repository userSessions = new Repository();
@@ -31,5 +34,15 @@ namespace Server
             repository.Photos.Add(u2, new List<Photo>());
             repository.Photos.Add(u3, new List<Photo>());
         }
+        
+        
+
+        // Additional configuration is required to successfully run gRPC on macOS.
+        // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
+        
+    
 }
