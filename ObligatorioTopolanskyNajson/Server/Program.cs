@@ -26,8 +26,10 @@ namespace Server
             User u3 = new User("Santiago", "Topolansky", "santi", "topo");
             repository.Users.Add(u1);
             repository.Users.Add(u2);
+            repository.Users.Add(u3);
             repository.Photos.Add(u1, new List<Photo>());
             repository.Photos.Add(u2, new List<Photo>());
+            repository.Photos.Add(u3, new List<Photo>());
         }
     }
 }

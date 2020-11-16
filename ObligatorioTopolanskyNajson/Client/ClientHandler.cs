@@ -55,6 +55,7 @@ namespace Client
                 }
                 catch (Exception e)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(e.Message);
                     Console.WriteLine("Desconectando debido a un error...");
                     _keepConnection = false;
@@ -175,7 +176,9 @@ namespace Client
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error: {0}", header.IData);
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
 
@@ -192,7 +195,9 @@ namespace Client
             } 
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error: {0}", header.IData);
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
         
@@ -242,12 +247,15 @@ namespace Client
             Receive(header);
             if (header.ICommand == CommandConstants.OK)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Mostrando fotos del usuario: {0} \n", username);
                 var photos = JsonSerializer.Deserialize<List<string>>(header.IData);
                 foreach (var photoName in photos)
                 {
                     Console.WriteLine("- {0}", photoName);
                 }
+                
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\n....OPCIONES....\n" + 
                                   "(a) - Comentar una foto\n" +
                                   "(b) - Volver\n");
@@ -261,7 +269,9 @@ namespace Client
             } 
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error: {0}", header.IData);
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
 
@@ -280,11 +290,15 @@ namespace Client
             Receive(header);
             if (header.ICommand == CommandConstants.OK)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Comentario agregado correctamente\n");
+                Console.ForegroundColor = ConsoleColor.White;
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error: {0}", header.IData);
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
 
@@ -296,18 +310,22 @@ namespace Client
             Send(CommandConstants.GetComments, data);
             Header header = new Header();
             Receive(header);
-            Console.WriteLine("Mostrando los comentarios de la foto: {0} \n", data);
             if (header.ICommand == CommandConstants.OK)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Mostrando los comentarios de la foto: {0} \n", data);
                 var comments = JsonSerializer.Deserialize<List<string>>(header.IData);
                 foreach (var comment in comments)
                 {
                     Console.WriteLine(comment);
                 }
+                Console.ForegroundColor = ConsoleColor.White;
             } 
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error: {0}", header.IData);
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
 
@@ -320,7 +338,9 @@ namespace Client
             IFileHandler fileHandler = new FileHandler();
             while(path == null || path.Equals(string.Empty) || !fileHandler.FileExists(path))
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ruta invalida, vuelva a ingresar una ruta correcta...");
+                Console.ForegroundColor = ConsoleColor.White;
                 path = Console.ReadLine();
             }
             
@@ -356,7 +376,9 @@ namespace Client
                 _networkStreamHandler.Write(data);
                 currentPart++;
             }
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Imagen: {0} enviada...", fileName);
+            Console.ForegroundColor = ConsoleColor.White;
         }
         
         private void ListUsersFunction()
@@ -364,9 +386,10 @@ namespace Client
             Send(CommandConstants.ListUsers, "");
             Header header = new Header();
             Receive(header);
-            Console.WriteLine("Usuarios Conectados:\n");
             if (header.ICommand == CommandConstants.OK)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Usuarios Conectados:\n");
                 var sessions = JsonSerializer.Deserialize<List<User>>(header.IData);
                 foreach (var user in sessions)
                 {
@@ -375,10 +398,13 @@ namespace Client
                         Console.WriteLine("Usuario: {0}",user.UserName);
                     }
                 }
+                Console.ForegroundColor = ConsoleColor.White;
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error: {0}", header.IData);
+                Console.ForegroundColor = ConsoleColor.White;
             }
             
         }

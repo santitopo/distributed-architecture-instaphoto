@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Server
 {
@@ -6,18 +7,18 @@ namespace Server
     {
         public string Name { get; set; }
         public string Path { get; set; }
-        public Dictionary<User, string> Comments { get; set; }
+        public List<Tuple<User, string>> Comments { get; set; }
 
         public Photo()
         {
-            Comments = new Dictionary<User, string>();
+            Comments = new List<Tuple<User, string>>();
         }
         
         public Photo(string aName, string aPath)
         {
             Name = aName;
             Path = aPath;
-            Comments = new Dictionary<User, string>();
+            Comments = new List<Tuple<User, string>>();
         }
         
     }

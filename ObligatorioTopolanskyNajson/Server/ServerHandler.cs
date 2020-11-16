@@ -307,7 +307,8 @@ namespace Server
                     if (selectedPhoto != null)
                     {
                         User thisUser = _repository.FindUserByTcpClient(tcpClient);
-                        selectedPhoto.Comments.Add(thisUser, comment);
+                        Tuple<User, string> userComment = new Tuple<User, string>(thisUser, comment);
+                        selectedPhoto.Comments.Add(userComment);
                         Send(tcpClient.GetStream(), CommandConstants.OK, "");
                     }
                     else
@@ -339,7 +340,7 @@ namespace Server
                 List<string> comments = new List<string>();
                 foreach (var comment in selectedPhoto.Comments)
                 {
-                    comments.Add(comment.Key.Name +" - "+ comment.Value);
+                    comments.Add(comment.Item1.Name +" - "+ comment.Item2);
                 }
                 Send(tcpClient.GetStream(), CommandConstants.OK, JsonSerializer.Serialize(comments));
             }
