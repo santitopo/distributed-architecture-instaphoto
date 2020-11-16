@@ -15,7 +15,6 @@ namespace LogsServer
 
         static void Main(string[] args)
         {
-
             using var channel = new ConnectionFactory() {HostName = "localhost"}.CreateConnection().CreateModel();
             channel.QueueDeclare(queue: "log_queue",
                 durable: false,

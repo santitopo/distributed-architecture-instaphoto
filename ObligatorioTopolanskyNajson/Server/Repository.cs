@@ -20,30 +20,50 @@ namespace Server
         public User FindUserByUsernamePassword(string aUserName, string aPassword)
         {
             User aUser = null;
-            foreach (var user in Users)
-            {
-                if (user.UserName.Equals(aUserName) && user.Password.Equals(aPassword))
-                    aUser = user;
-            }
+            
+                foreach (var user in Users)
+                {
+                    if (user.UserName.Equals(aUserName) && user.Password.Equals(aPassword))
+                        aUser = user;
+                }
+            
 
             return aUser;
         }
         public User FindUserByUsername(string aUserName)
         {
             User aUser = null;
-            foreach (var user in Users)
-            {
-                if (user.UserName.Equals(aUserName))
-                    aUser = user;
-            }
+            
+                foreach (var user in Users)
+                {
+                    if (user.UserName.Equals(aUserName))
+                        aUser = user;
+                }
+            
 
             return aUser;
         }
+
+        public User FindUserByTcpClient(TcpClient aTcpClient)
+        {
+            User aUser = null;
+            
+                foreach (var session in Sessions)
+                {
+                    if (session.Key.Equals(aTcpClient))
+                        aUser = session.Value;
+                }
+            
+            return aUser;
+        }
+
         public List<Photo> FindPhotosByUsername(string aUserName)
         {
-            User user = FindUserByUsername(aUserName);
-            List<Photo> asocciatedPhotos = Photos[user];
-            return asocciatedPhotos;
+            
+                User user = FindUserByUsername(aUserName);
+                List<Photo> asocciatedPhotos = Photos[user];
+                return asocciatedPhotos;
+            
         }
     }
 

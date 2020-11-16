@@ -201,11 +201,10 @@ namespace Client
             while (_keepConnection)
             {
                 Console.WriteLine("\n........ MENU PRINCIPAL ........\n" + 
-                                  "(a) - Ver Lista de Usuarios\n" +
+                                  "(a) - Ver lista de Usuarios\n" +
                                   "(b) - Subir una foto\n"+
-                                  "(c) - Ver fotos de un usuario\n"+
-                                  "(d) - Ver comentarios de una foto\n" +
-                                  "(e) - Agregar un comentario a una foto\n" +
+                                  "(c) - Ver y comentar fotos de usuarios\n"+
+                                  "(d) - Ver comentarios de mis foto\n" +
                                   "(exit) - Desconectarse");
                 
                 string input = Console.ReadLine();
@@ -223,9 +222,6 @@ namespace Client
                         break; 
                     case "d":
                         GetCommentsFunction();
-                        break;
-                    case "e":
-                        AddCommentFunction();
                         break;
                     case "exit":
                         ExitFunction();
@@ -252,6 +248,16 @@ namespace Client
                 {
                     Console.WriteLine("- {0}", photoName);
                 }
+                Console.WriteLine("\n....OPCIONES....\n" + 
+                                  "(a) - Comentar una foto\n" +
+                                  "(b) - Volver\n");
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "a":
+                        AddCommentFunction(username);
+                        break;
+                }
             } 
             else
             {
@@ -264,19 +270,33 @@ namespace Client
             Send(CommandConstants.Exit, "");
         }
 
-        private void AddCommentFunction()
+        private void AddCommentFunction(string username)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("\nIngrese el nombre de la foto (con terminación) y comentario, separados por # \n");
+            string input = Console.ReadLine();
+            string data = username + "#" + input;
+            Send(CommandConstants.AddComment, data);
+            Header header = new Header();
+            Receive(header);
+            if (header.ICommand == CommandConstants.OK)
+            {
+                Console.WriteLine("Comentario agregado correctamente\n");
+            }
+            else
+            {
+                Console.WriteLine("Error: {0}", header.IData);
+            }
         }
 
         private void GetCommentsFunction()
         {
-            Console.WriteLine("\nIngrese el usuario y nombre de la foto el cual desea ver los comentarios separados por # :\n");
+            Console.WriteLine("\nIngrese el nombre de la foto (con terminación) para ver los comentarios" +
+                              "\n Nota: Solo es posible ver comentarios en sus propias fotos");
             string data = Console.ReadLine();
             Send(CommandConstants.GetComments, data);
             Header header = new Header();
             Receive(header);
-            Console.WriteLine("Mostrando los comentarios de la foto: {0} \n", data.Split("#")[1]);
+            Console.WriteLine("Mostrando los comentarios de la foto: {0} \n", data);
             if (header.ICommand == CommandConstants.OK)
             {
                 var comments = JsonSerializer.Deserialize<List<string>>(header.IData);
@@ -352,7 +372,7 @@ namespace Client
                 {
                     if (user != null)
                     {
-                        Console.WriteLine("Usuario: {0} | Conexion: {1} ",user.UserName,user.LastConnection);
+                        Console.WriteLine("Usuario: {0}",user.UserName);
                     }
                 }
             }

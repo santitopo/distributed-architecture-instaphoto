@@ -139,22 +139,29 @@ namespace Server
 
         private void ListPhotos(TcpClient tcpClient, Header header)
         {
-            string[] data = header.IData.Split("#");
-            string username = data[0];
-
-            List<Photo> associatedPhotos;
-            lock (_repository.Photos)
+            try
             {
-                associatedPhotos = _repository.FindPhotosByUsername(username);
-            }
+                string[] data = header.IData.Split("#");
+                string username = data[0];
 
-            List<string> photoName = new List<string>();
-            foreach (var photo in associatedPhotos)
-            {
-                photoName.Add(photo.Name);
+                List<Photo> associatedPhotos;
+                lock (_repository.Photos)
+                {
+                    associatedPhotos = _repository.FindPhotosByUsername(username);
+                }
+
+                List<string> photoName = new List<string>();
+                foreach (var photo in associatedPhotos)
+                {
+                    photoName.Add(photo.Name);
+                }
+
+                Send(tcpClient.GetStream(), CommandConstants.OK, JsonSerializer.Serialize(photoName));
             }
-            
-            Send(tcpClient.GetStream(), CommandConstants.OK, JsonSerializer.Serialize(photoName));
+            catch (Exception e)
+            {
+                Send(tcpClient.GetStream(), CommandConstants.Error, "Error procesando la solicitud");
+            }
         }
 
         private void GenerateLog(string message, string level)
@@ -220,37 +227,45 @@ namespace Server
         private void LoginFunction(TcpClient tcpClient, Header header)
         {
             var networkStream = tcpClient.GetStream();
-            string[] loginData = header.IData.Split("#");
-            
-            User user;
-            lock (_repository)
+            try
             {
-                 user = _repository.FindUserByUsernamePassword(loginData[0], loginData[1]);
-            }
-            
-            if (user != null)
-            {
-                if (!user.IsLogued)
+                string[] loginData = header.IData.Split("#");
+
+                User user;
+                lock (_repository)
                 {
-                    user.IsLogued = true; 
-                    user.LastConnection = DateTime.Now;
-                    lock (_repository)
+                    user = _repository.FindUserByUsernamePassword(loginData[0], loginData[1]);
+                }
+
+                if (user != null)
+                {
+                    if (!user.IsLogued)
                     {
-                        _repository.Sessions[tcpClient] = user;
+                        user.IsLogued = true;
+                        user.LastConnection = DateTime.Now;
+                        lock (_repository)
+                        {
+                            _repository.Sessions[tcpClient] = user;
+                        }
+
+                        Send(networkStream, CommandConstants.OK, "");
                     }
-                    Send(networkStream, CommandConstants.OK, "");
+                    else
+                    {
+                        string message = "La sesión ya esta iniciada para el usuario " + loginData[0];
+                        GenerateLog(message, LogConstants.Info);
+                        Send(networkStream, CommandConstants.Error, message);
+                    }
                 }
                 else
                 {
-                    string message = "La sesión ya esta iniciada para el usuario " + loginData[0];
-                    GenerateLog(message, LogConstants.Info);
+                    string message = "El usuario no existe";
                     Send(networkStream, CommandConstants.Error, message);
                 }
             }
-            else
+            catch (Exception e)
             {
-                string message = "El usuario no existe";
-                Send(networkStream, CommandConstants.Error, message);
+                Send(networkStream, CommandConstants.Error, "Error procesando la solicitud");
             }
         }
         private void RegisterFunction(TcpClient tcpClient, Header header)
@@ -277,18 +292,45 @@ namespace Server
         }
         private void AddCommentFunction(TcpClient tcpClient, Header header)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string[] data = header.IData.Split("#");
+                string username = data[0];
+                string fileName = data[1];
+                string comment = data[2];
+                Photo selectedPhoto;
+                lock (_repository.Photos)
+                {
+                    List<Photo> associatedPhotos = _repository.FindPhotosByUsername(username);
+                    selectedPhoto = associatedPhotos.Find(x => x.Name == fileName);
+
+                    if (selectedPhoto != null)
+                    {
+                        User thisUser = _repository.FindUserByTcpClient(tcpClient);
+                        selectedPhoto.Comments.Add(thisUser, comment);
+                        Send(tcpClient.GetStream(), CommandConstants.OK, "");
+                    }
+                    else
+                    {
+                        Send(tcpClient.GetStream(), CommandConstants.Error, "No se encontró la foto seleccionada");
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Send(tcpClient.GetStream(), CommandConstants.Error, "Error procesando su solicitud");
+            }
         }
         private void GetCommentFunction(TcpClient tcpClient, Header header)
         {
-            string[] data = header.IData.Split("#");
-            string username = data[0];
-            string fileName = data[1];
+            User username = _repository.FindUserByTcpClient(tcpClient);
+            string fileName = header.IData;
 
             Photo selectedPhoto;
             lock (_repository.Photos)
             {
-                List<Photo> associatedPhotos = _repository.FindPhotosByUsername(username);
+                List<Photo> associatedPhotos = _repository.FindPhotosByUsername(username.UserName);
                 selectedPhoto = associatedPhotos.Find(x => x.Name == fileName);
             }
 
@@ -303,7 +345,7 @@ namespace Server
             }
             else
             {
-                Send(tcpClient.GetStream(), CommandConstants.Error, "No se encontró la foto seleccionada");
+                Send(tcpClient.GetStream(), CommandConstants.Error, "No se encontró la foto consultada");
             }
             
         }

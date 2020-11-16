@@ -23,6 +23,7 @@ namespace Server
         {
             User u1 = new User("Jose", "Hernandez", "jh12", "user");
             User u2 = new User("Martina", "Perez", "mp10", "user");
+            User u3 = new User("Santiago", "Topolansky", "santi", "topo");
             repository.Users.Add(u1);
             repository.Users.Add(u2);
             repository.Photos.Add(u1, new List<Photo>());
