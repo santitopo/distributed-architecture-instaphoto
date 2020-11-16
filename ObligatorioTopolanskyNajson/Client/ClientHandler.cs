@@ -14,7 +14,6 @@ using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ProtocolLibrary;
 using Server;
-using Shared;
 
 namespace Client
 {

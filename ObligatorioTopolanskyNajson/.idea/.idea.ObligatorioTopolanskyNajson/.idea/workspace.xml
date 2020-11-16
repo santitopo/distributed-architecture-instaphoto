@@ -26,15 +26,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfb4f17f-ea0d-4e48-874a-d4963477001c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Client/img.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/ServerImages/img.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/ServerImages/retro.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/ClientHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Client/ClientHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Photo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Photo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LogsServer/LogsServer.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LogsServer/LogsServer.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LogsServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LogsServer/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/ServerHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/ServerHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/ServerImages/img.png" beforeDir="false" afterPath="$PROJECT_DIR$/Server/ServerImages/img.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/ServerImages/retro.png" beforeDir="false" afterPath="$PROJECT_DIR$/Server/ServerImages/retro.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,15 +60,16 @@
         <option value="$PROJECT_DIR$/Common/Config/Config.cs" />
         <option value="$PROJECT_DIR$/Server/User.cs" />
         <option value="$PROJECT_DIR$/Common/Protocol/CommandConstants.cs" />
-        <option value="$PROJECT_DIR$/LogsServer/Program.cs" />
         <option value="$PROJECT_DIR$/Common/Logs/Log.cs" />
         <option value="$PROJECT_DIR$/Common/LogsTest/LogT.cs" />
         <option value="$PROJECT_DIR$/Common/LogsTest/Log.cs" />
         <option value="$PROJECT_DIR$/Server/Repository.cs" />
         <option value="$PROJECT_DIR$/Server/Photo.cs" />
+        <option value="$PROJECT_DIR$/Server/Program.cs" />
+        <option value="$PROJECT_DIR$/Server/Log.cs" />
+        <option value="$PROJECT_DIR$/LogsServer/Program.cs" />
         <option value="$PROJECT_DIR$/Server/ServerHandler.cs" />
         <option value="$PROJECT_DIR$/Client/ClientHandler.cs" />
-        <option value="$PROJECT_DIR$/Server/Program.cs" />
       </list>
     </option>
   </component>
@@ -202,6 +202,7 @@
       <workItem from="1605394012325" duration="164000" />
       <workItem from="1605474688891" duration="7561000" />
       <workItem from="1605492666020" duration="2063000" />
+      <workItem from="1605548164505" duration="1430000" />
     </task>
     <servers />
   </component>
@@ -236,24 +237,28 @@
     </state>
     <state width="748" height="304" key="DebuggerActiveHint/0.0.1280.680@0.0.1280.680" timestamp="1605493785030" />
     <state width="1122" height="464" key="DebuggerActiveHint/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1605288426972" />
-    <state width="1237" height="125" key="GridCell.Tab.0.bottom" timestamp="1605494751262">
+    <state width="1237" height="418" key="GridCell.Tab.0.bottom" timestamp="1605551146907">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state width="1237" height="418" key="GridCell.Tab.0.bottom/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146907" />
     <state width="1237" height="125" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1605494751262" />
     <state width="1877" height="297" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1605289834981" />
-    <state width="1237" height="125" key="GridCell.Tab.0.center" timestamp="1605494751262">
+    <state width="1237" height="418" key="GridCell.Tab.0.center" timestamp="1605551146907">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state width="1237" height="418" key="GridCell.Tab.0.center/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146907" />
     <state width="1237" height="125" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1605494751262" />
     <state width="1877" height="297" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1605289834981" />
-    <state width="1237" height="125" key="GridCell.Tab.0.left" timestamp="1605494751262">
+    <state width="1237" height="418" key="GridCell.Tab.0.left" timestamp="1605551146906">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state width="1237" height="418" key="GridCell.Tab.0.left/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146906" />
     <state width="1237" height="125" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1605494751262" />
     <state width="1877" height="297" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1605289834981" />
-    <state width="1237" height="125" key="GridCell.Tab.0.right" timestamp="1605494751262">
+    <state width="1237" height="418" key="GridCell.Tab.0.right" timestamp="1605551146907">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state width="1237" height="418" key="GridCell.Tab.0.right/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146907" />
     <state width="1237" height="125" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1605494751262" />
     <state width="1877" height="297" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1605289834981" />
     <state width="1237" height="125" key="GridCell.Tab.1.bottom" timestamp="1605494751262">

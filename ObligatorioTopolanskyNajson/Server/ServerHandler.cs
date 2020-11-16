@@ -16,7 +16,6 @@ using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ProtocolLibrary;
 using RabbitMQ.Client;
-using Shared;
 
 namespace Server
 {
