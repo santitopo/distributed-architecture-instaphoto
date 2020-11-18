@@ -16,6 +16,7 @@
     <projectFile>LogsServer2/LogsServer2.csproj</projectFile>
     <projectFile>AdministrativeServerAPI/AdministrativeServerAPI.csproj</projectFile>
     <projectFile>AdministrativeServerAPI/AdministrativeServer.csproj</projectFile>
+    <projectFile>WebAPIClient/WebAPIClient.csproj</projectFile>
   </component>
   <component name="BranchesTreeState">
     <expand>
@@ -37,26 +38,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfb4f17f-ea0d-4e48-874a-d4963477001c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/config/applicationhost.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AdministrativeServer/Controllers/WeatherForecastController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AdministrativeServer/Properties/launchSettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AdministrativeServer/Startup.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AdministrativeServer/WeatherForecast.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AdministrativeServer/appsettings.Development.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AdministrativeServer/appsettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LogsServer/Controllers/LogsController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LogsServer/Properties/launchSettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LogsServer/Startup.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LogsServer/WeatherForecast.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LogsServer/appsettings.Development.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LogsServer/appsettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IP-Puertos.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AdministrativeClient/Program.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AdministrativeClient/WebAPIClient.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TutorialWebAPIClient.url" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Guia.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Guia2.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AdministrativeServer/AdministrativeServer.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/AdministrativeServer/AdministrativeServer.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AdministrativeServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AdministrativeServer/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LogsServer/LogsServer.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LogsServer/LogsServer.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LogsServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LogsServer/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/config/applicationhost.config" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/config/applicationhost.config" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ObligatorioTopolanskyNajson.sln" beforeDir="false" afterPath="$PROJECT_DIR$/ObligatorioTopolanskyNajson.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TipoDeProyecto_ServerAdministracion.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../grpcClientConfig.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,6 +107,8 @@
         <option value="$PROJECT_DIR$/AdministrativeServerAPI/Controllers/WeatherForecastController.cs" />
         <option value="$PROJECT_DIR$/AdministrativeServerAPI/Properties/launchSettings.json" />
         <option value="$PROJECT_DIR$/AdministrativeServerAPI/AdministrativeServerAPI.csproj" />
+        <option value="$PROJECT_DIR$/LogsServer/Properties/launchSettings.json" />
+        <option value="$PROJECT_DIR$/WebAPIClient/Program.cs" />
       </list>
     </option>
   </component>
@@ -134,7 +129,25 @@
     <property name="XThreadsFramesViewSplitterKey" value="0.5007752" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.LogsServer: API &amp; RabbitMQ">
+  <component name="RunManager" selected=".NET Project.AdministrativeClient">
+    <configuration name="AdministrativeClient" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/AdministrativeClient/bin/Debug/netcoreapp3.1/WebAPIClient.dll" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AdministrativeClient/bin/Debug/netcoreapp3.1" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/AdministrativeClient/AdministrativeClient.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="DotNetCore" />
+      <option name="PROJECT_TFM" value=".NETCoreApp,Version=v3.1" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
     <configuration name="Client" type="DotNetProject" factoryName=".NET Project" singleton="false">
       <option name="EXE_PATH" value="$PROJECT_DIR$/Client/bin/Debug/netcoreapp3.1/Client.dll" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -256,6 +269,7 @@
       <item itemvalue=".NET Project.Client" />
       <item itemvalue=".NET Project.Common" />
       <item itemvalue=".NET Project.LogsServer" />
+      <item itemvalue=".NET Project.AdministrativeClient" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -293,7 +307,8 @@
       <workItem from="1605548164505" duration="1430000" />
       <workItem from="1605711985421" duration="34000" />
       <workItem from="1605712049048" duration="350000" />
-      <workItem from="1605716012400" duration="181000" />
+      <workItem from="1605716012400" duration="1364000" />
+      <workItem from="1605721665676" duration="71000" />
     </task>
     <servers />
   </component>
@@ -319,39 +334,43 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="165" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605716191626">
+    <state x="165" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605721735755">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="165" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1605716191626" />
+    <state x="165" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1605721735755" />
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1600714911414" />
     <state width="748" height="304" key="DebuggerActiveHint" timestamp="1605493785030">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="748" height="304" key="DebuggerActiveHint/0.0.1280.680@0.0.1280.680" timestamp="1605493785030" />
     <state width="1122" height="464" key="DebuggerActiveHint/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1605288426972" />
-    <state width="1237" height="476" key="GridCell.Tab.0.bottom" timestamp="1605716132165">
+    <state x="295" y="99" key="FileChooserDialogImpl" timestamp="1605721682572">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="295" y="99" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1605721682572" />
+    <state width="1237" height="102" key="GridCell.Tab.0.bottom" timestamp="1605721619749">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1237" height="418" key="GridCell.Tab.0.bottom/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146907" />
-    <state width="1237" height="476" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1605716132165" />
+    <state width="1237" height="102" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1605721619749" />
     <state width="1877" height="297" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1605289834981" />
-    <state width="1237" height="476" key="GridCell.Tab.0.center" timestamp="1605716132165">
+    <state width="1237" height="102" key="GridCell.Tab.0.center" timestamp="1605721619749">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1237" height="418" key="GridCell.Tab.0.center/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146907" />
-    <state width="1237" height="476" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1605716132165" />
+    <state width="1237" height="102" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1605721619749" />
     <state width="1877" height="297" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1605289834981" />
-    <state width="1237" height="476" key="GridCell.Tab.0.left" timestamp="1605716132165">
+    <state width="1237" height="102" key="GridCell.Tab.0.left" timestamp="1605721619748">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1237" height="418" key="GridCell.Tab.0.left/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146906" />
-    <state width="1237" height="476" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1605716132165" />
+    <state width="1237" height="102" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1605721619748" />
     <state width="1877" height="297" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1605289834981" />
-    <state width="1237" height="476" key="GridCell.Tab.0.right" timestamp="1605716132165">
+    <state width="1237" height="102" key="GridCell.Tab.0.right" timestamp="1605721619749">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1237" height="418" key="GridCell.Tab.0.right/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146907" />
-    <state width="1237" height="476" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1605716132165" />
+    <state width="1237" height="102" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1605721619749" />
     <state width="1877" height="297" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1605289834981" />
     <state width="1237" height="125" key="GridCell.Tab.1.bottom" timestamp="1605494751262">
       <screen x="0" y="0" width="1280" height="680" />
@@ -442,10 +461,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="147" y="153" width="1080" height="480" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1280.680@0.0.1280.680" timestamp="1605479506956" />
-    <state x="192" y="77" width="644" height="441" key="find.popup" timestamp="1605716039849">
+    <state x="192" y="77" width="644" height="534" key="find.popup" timestamp="1605721684591">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="192" y="77" width="644" height="441" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1605716039849" />
+    <state x="192" y="77" width="644" height="534" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1605721684591" />
     <state x="616" y="240" key="run.anything.popup" timestamp="1605208439102">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
