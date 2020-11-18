@@ -10,11 +10,11 @@ namespace Common.Config
         public static string Portclient;
         public static string ImagesFolder;
 
-        public static void StartConfiguration()
+        public static void StartConfiguration(string configPath)
         {
             string[] lines =
                 System.IO.File.ReadAllLines(
-                    @"..\\..\\..\\..\\config.txt");
+                    configPath);
 
             Dictionary<string, string> values = new Dictionary<string, string>();
             foreach (var line in lines)

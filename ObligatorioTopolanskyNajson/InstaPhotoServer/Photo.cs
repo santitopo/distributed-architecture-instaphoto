@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Server
+namespace InstaPhotoServer
 {
     public class Photo
     {

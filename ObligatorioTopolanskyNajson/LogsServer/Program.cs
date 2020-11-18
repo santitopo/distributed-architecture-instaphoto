@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using Server;
+using InstaPhotoServer;
 
 
 namespace LogsServer

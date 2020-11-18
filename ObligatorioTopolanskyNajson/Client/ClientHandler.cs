@@ -13,7 +13,7 @@ using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ProtocolLibrary;
-using Server;
+using InstaPhotoServer;
 
 namespace Client
 {

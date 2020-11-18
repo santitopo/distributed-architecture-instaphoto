@@ -8,7 +8,7 @@ namespace Client
         static void Main(string[] args)
         {
             Console.WriteLine("Starting client");
-            Config.StartConfiguration();
+            Config.StartConfiguration(@"..\\..\\..\\..\\config.txt");
             var clientHandler = new ClientHandler();
             clientHandler.Menu0();
         }

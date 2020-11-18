@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net.Sockets;
 
-namespace Server
+namespace InstaPhotoServer
 {
     public class Repository
     {

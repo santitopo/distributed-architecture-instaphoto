@@ -17,7 +17,7 @@ using Common.Protocol;
 using ProtocolLibrary;
 using RabbitMQ.Client;
 
-namespace Server
+namespace InstaPhotoServer
 {
     class ServerHandler
     {
@@ -157,7 +157,7 @@ namespace Server
 
                 Send(tcpClient.GetStream(), CommandConstants.OK, JsonSerializer.Serialize(photoName));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Send(tcpClient.GetStream(), CommandConstants.Error, "Error procesando la solicitud");
             }
@@ -262,7 +262,7 @@ namespace Server
                     Send(networkStream, CommandConstants.Error, message);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Send(networkStream, CommandConstants.Error, "Error procesando la solicitud");
             }
@@ -317,7 +317,7 @@ namespace Server
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Send(tcpClient.GetStream(), CommandConstants.Error, "Error procesando su solicitud");
             }
