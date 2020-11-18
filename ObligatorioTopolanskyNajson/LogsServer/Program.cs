@@ -1,19 +1,27 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using InstaPhotoServer;
 
-
-namespace LogsServer
+namespace LogsServer2
 {
-    class Program
+    public class Program
     {
         public static List<Log> logs = new List<Log>();
+        public static void Main(string[] args)
+        {
+            var threadServer = new Thread(()=> MessageQueue());
+            threadServer.Start();
+            CreateHostBuilder(args).Build().Run();
+        }
 
-        static void Main(string[] args)
+        static void MessageQueue()
         {
             using var channel = new ConnectionFactory() {HostName = "localhost"}.CreateConnection().CreateModel();
             channel.QueueDeclare(queue: "log_queue",
@@ -35,19 +43,27 @@ namespace LogsServer
                 consumer: consumer);
 
             var exit = false;
-            Console.WriteLine("--------Bienvenido al servidor de Logs--------");
-            Console.WriteLine("Opciones:\n 1 - Ver Lista de Logs.\n 2 - Salir");
             while (!exit)
             {
+                Console.WriteLine("--------Bienvenido al servidor de Logs--------");
+                Console.WriteLine("Opciones:\n 1 - Ver Lista de Logs.\n 2 - Salir");
                 var option = Console.ReadLine();
                 switch (option)
                 {
                     case "1":
-                        foreach (var log in logs)
+                        if (logs != null && logs.Count > 0)
                         {
-                            string output = "Nivel: " + log.Level + " | Mensaje: " + log.Message + " |  Hora: " + log.DateTime;
-                            Console.WriteLine(output);
+                            foreach (var log in logs)
+                            {
+                                string output = "Nivel: " + log.Level + " | Mensaje: " + log.Message + " |  Hora: " + log.DateTime;
+                                Console.WriteLine(output);
+                            }
                         }
+                        else
+                        {
+                            Console.WriteLine("No hay logs para mostrar");
+                        }
+                        
                         break;
                     case "2":
                         exit = true;
@@ -58,5 +74,11 @@ namespace LogsServer
                 }
             }
         }
+        
+        
+        
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

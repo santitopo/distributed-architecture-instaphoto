@@ -1,12 +1,27 @@
-﻿using System;
+using System;
+using System.Threading;
 using System.Threading.Tasks;
+using AdministrativeServer;
 using Grpc.Net.Client;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace AdministrativeServer
 {
-    class Program
+    public class Program
     {
-        static async Task Main(string[] args)
+        public static void Main(string[] args)
+        {
+            var threadServer = new Thread(()=> GrpcClient());
+            threadServer.Start(); 
+            CreateHostBuilder(args).Build().Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        
+        static async Task GrpcClient()
         {
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
             Console.WriteLine("Starting gRPC client example......");
@@ -14,9 +29,9 @@ namespace AdministrativeServer
             var client = new Greeter.GreeterClient(channel);
             var response =  await client.SayHelloAsync(new HelloRequest{Name = "Hola"});
             Console.WriteLine("Respuesta: " + response.Message);
-            
-            
             Console.ReadLine();
         }
+        
+        
     }
 }
