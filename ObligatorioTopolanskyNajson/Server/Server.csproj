@@ -10,28 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Grpc.AspNetCore" Version="2.33.1" />
       <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="appsettings.Development.json">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Include="appsettings.json">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Include="Properties\launchSettings.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Protobuf Include="Protos\greet.proto">
-        <Generator>MSBuild:Compile</Generator>
-      </Protobuf>
     </ItemGroup>
 
 </Project>
