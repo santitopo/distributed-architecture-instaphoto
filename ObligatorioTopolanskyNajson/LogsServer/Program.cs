@@ -16,13 +16,6 @@ namespace LogsServer2
         public static List<Log> logs = new List<Log>();
         public static void Main(string[] args)
         {
-            var threadServer = new Thread(()=> MessageQueue());
-            threadServer.Start();
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        static void MessageQueue()
-        {
             using var channel = new ConnectionFactory() {HostName = "localhost"}.CreateConnection().CreateModel();
             channel.QueueDeclare(queue: "log_queue",
                 durable: false,
@@ -42,37 +35,66 @@ namespace LogsServer2
                 autoAck: true,
                 consumer: consumer);
 
-            var exit = false;
-            while (!exit)
+            CreateHostBuilder(args).Build().Run();
+            
+        }
+
+        static void MessageQueue()
+        {
+            using var channel = new ConnectionFactory() {HostName = "localhost"}.CreateConnection().CreateModel();
+            channel.QueueDeclare(queue: "log_queue",
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
+
+            var consumer = new EventingBasicConsumer(channel);
+            consumer.Received += (model, ea) =>
             {
-                Console.WriteLine("--------Bienvenido al servidor de Logs--------");
-                Console.WriteLine("Opciones:\n 1 - Ver Lista de Logs.\n 2 - Salir");
-                var option = Console.ReadLine();
-                switch (option)
-                {
-                    case "1":
-                        if (logs != null && logs.Count > 0)
-                        {
-                            foreach (var log in logs)
-                            {
-                                string output = "Nivel: " + log.Level + " | Mensaje: " + log.Message + " |  Hora: " + log.DateTime;
-                                Console.WriteLine(output);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("No hay logs para mostrar");
-                        }
-                        
-                        break;
-                    case "2":
-                        exit = true;
-                        break;
-                    default:
-                        Console.WriteLine("Opcion Incorrecta");
-                        break;
-                }
-            }
+                var body = ea.Body.ToArray();
+                var message = Encoding.UTF8.GetString(body);
+                var log = JsonSerializer.Deserialize<Log>(message);
+                logs.Add(log);
+                string output = "Nivel: " + log.Level + " | Mensaje: " + log.Message + " |  Hora: " + log.DateTime;
+                Console.WriteLine(output);
+            };
+            channel.BasicConsume(queue: "log_queue",
+                autoAck: true,
+                consumer: consumer);
+
+            Console.ReadLine();
+            Console.WriteLine("Exiting from log reception... ");
+            // var exit = false;
+            // while (!exit)
+            // {
+            //     Console.WriteLine("--------Bienvenido al servidor de Logs--------");
+            //     Console.WriteLine("Opciones:\n 1 - Ver Lista de Logs.\n 2 - Salir");
+            //     var option = Console.ReadLine();
+            //     switch (option)
+            //     {
+            //         case "1":
+            //             if (logs != null && logs.Count > 0)
+            //             {
+            //                 foreach (var log in logs)
+            //                 {
+            //                     string output = "Nivel: " + log.Level + " | Mensaje: " + log.Message + " |  Hora: " + log.DateTime;
+            //                     Console.WriteLine(output);
+            //                 }
+            //             }
+            //             else
+            //             {
+            //                 Console.WriteLine("No hay logs para mostrar");
+            //             }
+            //             
+            //             break;
+            //         case "2":
+            //             exit = true;
+            //             break;
+            //         default:
+            //             Console.WriteLine("Opcion Incorrecta");
+            //             break;
+            //     }
+            // }
         }
         
         
