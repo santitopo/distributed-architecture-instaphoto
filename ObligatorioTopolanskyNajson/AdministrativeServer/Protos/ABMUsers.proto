@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AdministrativeServer";
+
+package greet;
+
+service ABMUsers {
+    rpc AddUser (UserRequest) returns (InfoResponse);
+    rpc ModifyUser (UserRequest) returns (InfoResponse);
+    rpc DeleteUser (UserRequest) returns (InfoResponse);
+}
+
+message UserRequest{
+    string user = 1;
+}
+
+message InfoResponse{
+    string message = 1;
+}

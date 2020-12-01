@@ -9,7 +9,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using InstaPhotoServer;
 
-namespace LogsServer2
+namespace LogsServer
 {
     public class Program
     {
@@ -96,8 +96,6 @@ namespace LogsServer2
             //     }
             // }
         }
-        
-        
         
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)

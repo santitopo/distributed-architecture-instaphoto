@@ -32,24 +32,34 @@ namespace Client
             _tcpClient = new TcpClient(new IPEndPoint(IPAddress.Parse(Config.Ipclient), Convert.ToInt32(Config.Portclient)));
             _fileHandler = new FileHandler();
             _fileStreamHandler = new FileStreamHandler();
-
         }
 
         public void StartClient()
         {
-            _tcpClient.Connect(IPAddress.Parse(Config.Ipserver), Convert.ToInt32(Config.Portserver));
-            _networkStreamHandler = new NetworkStreamHandler(_tcpClient.GetStream());
-            _networkStream = _tcpClient.GetStream();
+            try
+            {
+                _tcpClient.Connect(IPAddress.Parse(Config.Ipserver), Convert.ToInt32(Config.Portserver));
+                _networkStreamHandler = new NetworkStreamHandler(_tcpClient.GetStream());
+                _networkStream = _tcpClient.GetStream();
+                _keepConnection = true;
+            }
+            catch (Exception e)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("No se pudo conectar al servidor debido a un error...");
+                Console.WriteLine(e.Message);
+                _keepConnection = false;
+            }
+
         }
 
         public void Handler()
         {
-            _keepConnection = true;
-            
             while (_keepConnection)
             {
                 try
                 {
+                    Console.WriteLine("Conectado al servidor");
                     Menu1();
                 }
                 catch (Exception e)
@@ -125,7 +135,6 @@ namespace Client
             {
                 Console.WriteLine("Conectando al servidor...");
                 this.StartClient();
-                Console.WriteLine("Conectado al servidor");
                 this.Handler();
                 Console.WriteLine("Hasta luego...");
                 
@@ -233,8 +242,6 @@ namespace Client
                         break;
                 }
             }
-   
-            
         }
 
         private void GetPhotosFunction()
@@ -247,24 +254,33 @@ namespace Client
             if (header.ICommand == CommandConstants.OK)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Mostrando fotos del usuario: {0} \n", username);
                 var photos = JsonSerializer.Deserialize<List<string>>(header.IData);
-                foreach (var photoName in photos)
+
+                if (photos.Count > 0)
                 {
-                    Console.WriteLine("- {0}", photoName);
-                }
+                    Console.WriteLine("Mostrando fotos del usuario: {0} \n", username);
+                    foreach (var photoName in photos)
+                    {
+                        Console.WriteLine("- {0}", photoName);
+                    }
                 
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("\n....OPCIONES....\n" + 
-                                  "(a) - Comentar una foto\n" +
-                                  "(b) - Volver\n");
-                string input = Console.ReadLine();
-                switch (input)
-                {
-                    case "a":
-                        AddCommentFunction(username);
-                        break;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n....OPCIONES....\n" + 
+                                      "(a) - Comentar una foto\n" +
+                                      "(b) - Volver\n");
+                    string input = Console.ReadLine();
+                    switch (input)
+                    {
+                        case "a":
+                            AddCommentFunction(username);
+                            break;
+                    }
                 }
+                else
+                {
+                    Console.WriteLine("Todavía no hay fotos para el usuario solicitado: {0}", username);
+                }
+
             } 
             else
             {
@@ -312,12 +328,20 @@ namespace Client
             if (header.ICommand == CommandConstants.OK)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Mostrando los comentarios de la foto: {0} \n", data);
                 var comments = JsonSerializer.Deserialize<List<string>>(header.IData);
-                foreach (var comment in comments)
+                if (comments.Count > 0)
                 {
-                    Console.WriteLine(comment);
+                    Console.WriteLine("Mostrando los comentarios de la foto: {0} \n", data);
+                    foreach (var comment in comments)
+                    {
+                        Console.WriteLine(comment);
+                    }
                 }
+                else
+                {
+                    Console.WriteLine("Todavía no hay comentarios para la foto solicitada: {0}", data);
+                }
+
                 Console.ForegroundColor = ConsoleColor.White;
             } 
             else
@@ -388,13 +412,13 @@ namespace Client
             if (header.ICommand == CommandConstants.OK)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Usuarios Conectados:\n");
+                Console.WriteLine("Usuarios del Sistema:\n");
                 var sessions = JsonSerializer.Deserialize<List<User>>(header.IData);
                 foreach (var user in sessions)
                 {
                     if (user != null)
                     {
-                        Console.WriteLine("Usuario: {0}",user.UserName);
+                        Console.WriteLine("{0} - {1} {2}",user.UserName, user.Name, user.Surname);
                     }
                 }
                 Console.ForegroundColor = ConsoleColor.White;

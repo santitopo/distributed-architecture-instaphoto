@@ -163,7 +163,7 @@ namespace InstaPhotoServer
             }
         }
 
-        private void GenerateLog(string message, string level)
+        private async void GenerateLog(string message, string level)
         {
             var channel = new ConnectionFactory() {HostName = "localhost"}.CreateConnection().CreateModel();
             channel.QueueDeclare(queue: "log_queue",
@@ -178,7 +178,7 @@ namespace InstaPhotoServer
             log.DateTime = DateTime.Now;
             
             var stringLog = JsonSerializer.Serialize(log);
-            SendMessage(channel, stringLog);
+            await SendMessage(channel, stringLog);
         }
         private static Task<bool> SendMessage(IModel channel, string message)
         {
@@ -246,7 +246,9 @@ namespace InstaPhotoServer
                         {
                             _repository.Sessions[tcpClient] = user;
                         }
-
+                        
+                        string message = "Sesión iniciada correctamente para el usuario " + loginData[0];
+                        GenerateLog(message, LogConstants.Info);
                         Send(networkStream, CommandConstants.OK, "");
                     }
                     else
@@ -258,7 +260,8 @@ namespace InstaPhotoServer
                 }
                 else
                 {
-                    string message = "El usuario no existe";
+                    string message = "El usuario "+ loginData[0] +" no existe";
+                    GenerateLog(message, LogConstants.Info);
                     Send(networkStream, CommandConstants.Error, message);
                 }
             }
@@ -278,12 +281,15 @@ namespace InstaPhotoServer
                 {
                     _repository.Users.Add(user);
                     _repository.Photos.Add(user, new List<Photo>());
-                    string message = "Usuario registrado correctamente";
+                    
+                    string message = "Usuario "+ registerData[2] +" registrado correctamente ";
+                    GenerateLog(message, LogConstants.Info);
                     Send(tcpClient.GetStream(), CommandConstants.OK,message);
                 }
                 else
                 {
                     string message = "El nombre de usuario "+ user.UserName +" ya esta en uso";
+                    GenerateLog(message, LogConstants.Info);
                     Send(tcpClient.GetStream(), CommandConstants.Error,message );
                 }
                     
@@ -308,14 +314,18 @@ namespace InstaPhotoServer
                         User thisUser = _repository.FindUserByTcpClient(tcpClient);
                         Tuple<User, string> userComment = new Tuple<User, string>(thisUser, comment);
                         selectedPhoto.Comments.Add(userComment);
+                        
+                        string message = "Comentario agregado correctamente a la foto: "+ selectedPhoto.Name;
+                        GenerateLog(message, LogConstants.Info);
                         Send(tcpClient.GetStream(), CommandConstants.OK, "");
                     }
                     else
                     {
-                        Send(tcpClient.GetStream(), CommandConstants.Error, "No se encontró la foto seleccionada");
+                        string message = "No se encontró la foto seleccionada: "+ selectedPhoto.Name;
+                        GenerateLog(message, LogConstants.Info);
+                        Send(tcpClient.GetStream(), CommandConstants.Error, message);
                     }
                 }
-
             }
             catch (Exception)
             {
@@ -341,11 +351,17 @@ namespace InstaPhotoServer
                 {
                     comments.Add(comment.Item1.Name +" - "+ comment.Item2);
                 }
+                
+                string message = "Comentarios correctamente mostrados para la foto: "+ selectedPhoto.Name;
+                GenerateLog(message, LogConstants.Info);
+                
                 Send(tcpClient.GetStream(), CommandConstants.OK, JsonSerializer.Serialize(comments));
             }
             else
             {
-                Send(tcpClient.GetStream(), CommandConstants.Error, "No se encontró la foto consultada");
+                string message = "No se encontró la foto consultada: "+ selectedPhoto.Name;
+                GenerateLog(message, LogConstants.Info);
+                Send(tcpClient.GetStream(), CommandConstants.Error, message);
             }
             
         }
@@ -394,14 +410,17 @@ namespace InstaPhotoServer
                     List<Photo> asocciatedPhotos = _repository.Photos[user];
                     asocciatedPhotos.Add(photo);
                 }
-
-                Console.WriteLine("Imagen: {0} recibida...", fileName);
+                string message = "Imagen: "+ fileName +" recibida...";
+                GenerateLog(message, LogConstants.Info);
         }
         private void ListUserFunction(TcpClient tcpClient, Header header)
         {
             var networkStream = tcpClient.GetStream();
-            List<User> connectedUsers = _repository.Sessions.Values.ToList();
-            var sessions = JsonSerializer.Serialize(connectedUsers);
+            List<User> users = _repository.Users.ToList();
+            var sessions = JsonSerializer.Serialize(users);
+            
+            string message = "Mostrando lista de usuarios..";
+            GenerateLog(message, LogConstants.Info);
             Send(networkStream, CommandConstants.OK, sessions);
         }
 
