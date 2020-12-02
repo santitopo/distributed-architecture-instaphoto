@@ -15,7 +15,6 @@ namespace AdministrativeServer.Controllers
     public class UsersController: ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
-
         public UsersController(ILogger<UsersController> logger)
         {
             _logger = logger;
@@ -38,20 +37,7 @@ namespace AdministrativeServer.Controllers
                         Username = user.UserName
                     });
                 
-                
                 return Ok(response.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-        [HttpGet]
-        public IActionResult Get()
-        {            
-            try
-            {
-                return Ok("hola");
             }
             catch (Exception e)
             {
@@ -64,30 +50,48 @@ namespace AdministrativeServer.Controllers
         {
             try
             {
-                return Ok();
+                AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
+                var channel = GrpcChannel.ForAddress("http://localhost:5001");
+                var client = new ABMUsers.ABMUsersClient(channel);
+                var response = client.DeleteUser(
+                    new UserModel()
+                    {
+                        Name = user.Name,
+                        Surname = user.Surname,
+                        Password = user.Password,
+                        Username = user.UserName
+                    });
+                
+                return Ok(response.Message);
             }
             catch (Exception e)
             {
-                return NotFound(e.Message);
+                return BadRequest(e.Message);
             }
-
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put()
+        public async Task<IActionResult> Put([FromBody] User user)
         {
             try
             {
                 AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
                 var channel = GrpcChannel.ForAddress("http://localhost:5001");
                 var client = new ABMUsers.ABMUsersClient(channel);
-                var response = await client.ModifyUserAsync(new UserModel() { });
-                        
+                var response = client.ModifyUser(
+                    new UserModel()
+                    {
+                        Name = user.Name,
+                        Surname = user.Surname,
+                        Password = user.Password,
+                        Username = user.UserName
+                    });
+                
                 return Ok(response.Message);
             }
             catch (Exception e)
             {
-                return NotFound(e.Message);
+                return BadRequest(e.Message);
             }
         }
     }

@@ -126,8 +126,6 @@
         <e p="ServerHandler.cs" t="Include" />
         <e p="ServerImages" t="Include">
           <e p="ImagenDePrueba.png" t="Include" />
-          <e p="img.png" t="Include" />
-          <e p="retro.png" t="Include" />
         </e>
         <e p="Services" t="Include">
           <e p="UserService.cs" t="Include" />

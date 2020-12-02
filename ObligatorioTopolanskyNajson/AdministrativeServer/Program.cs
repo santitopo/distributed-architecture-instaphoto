@@ -12,8 +12,8 @@ namespace AdministrativeServer
     {
         public static void Main(string[] args)
         {
-            var threadServer = new Thread(()=> GrpcClient());
-            threadServer.Start(); 
+            //var threadServer = new Thread(()=> GrpcClient());
+            //threadServer.Start(); 
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -23,19 +23,7 @@ namespace AdministrativeServer
         
         static async Task GrpcClient()
         {
-               AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
-                var channel = GrpcChannel.ForAddress("http://localhost:5001");
-                var client = new ABMUsers.ABMUsersClient(channel);
-                var response = await client.AddUserAsync( new UserModel()
-                {
-                    Name = "Pepe",
-                    Surname = "pp",
-                    Password = "blala",
-                    Username = "dasdsa"
-                });
-
-                Console.WriteLine(response.Message);
-                Console.ReadLine();
+               
         }
     }
 }

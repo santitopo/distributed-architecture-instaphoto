@@ -43,7 +43,9 @@ namespace InstaPhotoServer
         public void ModifyUser(User aUser)
         {
             User user = FindUserByUsername(aUser.UserName);
-            user = aUser;
+            user.Name = aUser.Name;
+            user.Surname = aUser.Surname;
+            user.Password = aUser.Password;
         }
         
         public User FindUserByUsernamePassword(string aUserName, string aPassword)

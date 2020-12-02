@@ -39,10 +39,7 @@ namespace InstaPhotoServer
                             Message = "El nombre de usuario "+ userModel.Username +" ya esta en uso"
                         });
                 }
-                    
             }
-            
-
         }
         
         public override Task<InfoResponse> ModifyUser(UserModel request, ServerCallContext context)
