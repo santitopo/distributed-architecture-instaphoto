@@ -25,7 +25,19 @@ namespace AdministrativeServer.Controllers
         {            
             try
             {
-                return Ok();
+                return Ok("hola");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        [HttpGet]
+        public IActionResult Get()
+        {            
+            try
+            {
+                return Ok("hola");
             }
             catch (Exception e)
             {

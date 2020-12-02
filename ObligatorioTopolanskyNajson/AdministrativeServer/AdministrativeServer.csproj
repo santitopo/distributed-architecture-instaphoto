@@ -23,5 +23,9 @@
       <ProjectReference Include="..\InstaPhotoServer\InstaPhotoServer.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Protobuf Include="Protos\ABMUsers.proto" GrpcServices="Client" />
+    </ItemGroup>
+
 
 </Project>

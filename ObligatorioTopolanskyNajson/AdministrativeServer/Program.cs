@@ -25,13 +25,14 @@ namespace AdministrativeServer
         {
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
             Console.WriteLine("Starting gRPC client example......");
+            
+            
             var channel = GrpcChannel.ForAddress("http://localhost:5001");
-            /*
-            var client = new Greeter.GreeterClient(channel);
-            var response =  await client.SayHelloAsync(new HelloRequest{Name = "Hola"});
+            var client = new ABMUsers.ABMUsersClient(channel);
+            var response = await client.AddUserAsync(new UserRequest() {User = "Hola"});
             Console.WriteLine("Respuesta: " + response.Message);
             Console.ReadLine();
-            */
+            
         }
         
         

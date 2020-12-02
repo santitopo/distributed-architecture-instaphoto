@@ -35,9 +35,10 @@ namespace AdministrativeClient
                 {
                     case "a":
                         client.DefaultRequestHeaders.Accept.Clear();
-                        client.DefaultRequestHeaders.Accept.Add(
-                            new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-                        client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+                        //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        // client.DefaultRequestHeaders.Accept.Add(
+                        // new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+                         //client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
                         
                         var streamTask = client.GetStreamAsync("https://localhost:44370/logs");
                         var logs = await JsonSerializer.DeserializeAsync<List<Log>>(await streamTask);
