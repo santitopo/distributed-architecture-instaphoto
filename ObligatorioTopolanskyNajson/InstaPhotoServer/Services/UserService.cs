@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Grpc.Core;
 using InstaPhotoServer;
@@ -15,6 +16,27 @@ namespace InstaPhotoServer
             _logger = logger;
         }
 
+        public override Task<ListUser> GetUsers(Empty request, ServerCallContext context)
+        {
+            var list = new ListUser();
+            lock (ServerHandler._repository.Users)
+            {
+                List<User> users = ServerHandler._repository.Users;
+                foreach (var user in users)
+                {
+                    list.Users.Add(new UserModel()
+                    {
+                        Name = user.Name,
+                        Surname = user.Surname,
+                        Username = user.UserName,
+                        Password = user.Password
+                    });
+                }
+            }
+
+            return Task.FromResult(list);
+        }
+        
         public override Task<InfoResponse> AddUser(UserModel request, ServerCallContext context)
         {
             UserModel userModel = request;

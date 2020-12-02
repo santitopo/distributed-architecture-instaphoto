@@ -20,6 +20,23 @@ namespace AdministrativeServer.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        public IActionResult Get()
+        {            
+            try
+            {
+                AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
+                var channel = GrpcChannel.ForAddress("http://localhost:5001");
+                var client = new ABMUsers.ABMUsersClient(channel);
+                var response = client.GetUsers(new Empty());
+                return Ok(response.Users);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
         [HttpPost]
         public IActionResult Post([FromBody] User user)
         {            
@@ -71,7 +88,7 @@ namespace AdministrativeServer.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] User user)
+        public IActionResult Put([FromBody] User user)
         {
             try
             {

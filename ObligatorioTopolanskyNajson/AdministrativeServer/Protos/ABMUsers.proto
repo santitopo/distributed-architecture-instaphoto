@@ -8,6 +8,15 @@ service ABMUsers {
     rpc AddUser (UserModel) returns (InfoResponse);
     rpc ModifyUser (UserModel) returns (InfoResponse);
     rpc DeleteUser (UserModel) returns (InfoResponse);
+    rpc GetUsers (Empty) returns (ListUser);
+}
+
+message ListUser{
+    repeated UserModel users = 1;
+}
+
+message Empty{
+
 }
 
 message UserModel{
