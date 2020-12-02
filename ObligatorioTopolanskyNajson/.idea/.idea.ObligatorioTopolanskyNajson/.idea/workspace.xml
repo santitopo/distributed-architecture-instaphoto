@@ -40,6 +40,7 @@
     <list default="true" id="bfb4f17f-ea0d-4e48-874a-d4963477001c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/AdministrativeServer/Controllers/UsersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AdministrativeServer/Controllers/UsersController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AdministrativeServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AdministrativeServer/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/InstaPhotoServer/Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/InstaPhotoServer/Repository.cs" afterDir="false" />
@@ -47,6 +48,9 @@
       <change beforePath="$PROJECT_DIR$/InstaPhotoServer/ServerImages/img.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/InstaPhotoServer/ServerImages/retro.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/config.txt" beforeDir="false" afterPath="$PROJECT_DIR$/config.txt" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/AdministrativeClient/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AdministrativeClient/Program.cs" afterDir="false" />
+>>>>>>> b99cb9c2a41526bd8d2988fa57a04970e6ab0adf
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +61,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
+<<<<<<< HEAD
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/0DF4C01E-760B-492A-98B6-5D00F3DDA2D3/4/DeveloperExceptionPageMiddleware.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/D9E410BA-61D6-43A7-8CC4-21DAC1F4447D/5A/HttpProtocol.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/F680C866-D120-4163-9634-EBD842255BE9/F3/ActionMethodExecutor.cs" root0="SKIP_HIGHLIGHTING" />
@@ -64,8 +69,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/84DD02A2-0F9F-4F84-A962-852FB5A636BF/3/AuthorizationMiddleware.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/E47CDD0A-CDA3-44CA-B3A5-C818AD13EBA9/13/EndpointMiddleware.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/98B05110-1BE7-453A-A125-8FE664261E16/6/IISMiddleware.cs" root0="SKIP_HIGHLIGHTING" />
+=======
+>>>>>>> b99cb9c2a41526bd8d2988fa57a04970e6ab0adf
     <setting file="file://$PROJECT_DIR$/LogsServer/Program.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/F680C866-D120-4163-9634-EBD842255BE9/FE/ControllerActionInvoker.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -115,12 +121,20 @@
         <option value="$PROJECT_DIR$/InstaPhotoServer/Protos/ABMUsers.proto" />
         <option value="$PROJECT_DIR$/InstaPhotoServer/Program.cs" />
         <option value="$PROJECT_DIR$/InstaPhotoServer/Startup.cs" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/AdministrativeClient/Program.cs" />
+=======
+        <option value="$PROJECT_DIR$/AdministrativeServer/Program.cs" />
+>>>>>>> b99cb9c2a41526bd8d2988fa57a04970e6ab0adf
         <option value="$PROJECT_DIR$/InstaPhotoServer/User.cs" />
         <option value="$PROJECT_DIR$/InstaPhotoServer/Services/UserService.cs" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/AdministrativeServer/Controllers/UsersController.cs" />
         <option value="$PROJECT_DIR$/AdministrativeServer/Program.cs" />
         <option value="$PROJECT_DIR$/InstaPhotoServer/Repository.cs" />
+=======
+        <option value="$PROJECT_DIR$/AdministrativeClient/Program.cs" />
+>>>>>>> b99cb9c2a41526bd8d2988fa57a04970e6ab0adf
       </list>
     </option>
   </component>
@@ -141,7 +155,11 @@
     <property name="XThreadsFramesViewSplitterKey" value="0.5007752" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
+<<<<<<< HEAD
   <component name="RunManager" selected=".NET Project.Client">
+=======
+  <component name="RunManager" selected=".NET Project.AdministrativeClient">
+>>>>>>> b99cb9c2a41526bd8d2988fa57a04970e6ab0adf
     <configuration name="AdministrativeClient" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="$PROJECT_DIR$/AdministrativeClient/bin/Debug/netcoreapp3.1/WebAPIClient.dll" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -229,21 +247,6 @@
         <option name="Build" />
       </method>
     </configuration>
-    <configuration name="InstaPhotoServer" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/InstaPhotoServer/InstaPhotoServer.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value=".NETCoreApp,Version=v3.1" />
-      <option name="LAUNCH_PROFILE_NAME" value="GrpcSampleService" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
     <configuration name="InstaPhotoServer: gRPC Server" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/InstaPhotoServer/InstaPhotoServer.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value=".NETCoreApp,Version=v3.1" />
@@ -275,7 +278,6 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue=".NET Launch Settings Profile.InstaPhotoServer" />
       <item itemvalue=".NET Launch Settings Profile.InstaPhotoServer: gRPC Server" />
       <item itemvalue=".NET Launch Settings Profile.LogsServer: API &amp; RabbitMQ" />
       <item itemvalue=".NET Launch Settings Profile.AdministrativeServer: API &amp; gRPC" />
@@ -326,7 +328,12 @@
       <workItem from="1606839505261" duration="12466000" />
       <workItem from="1606868312425" duration="3559000" />
       <workItem from="1606908002347" duration="6292000" />
+<<<<<<< HEAD
       <workItem from="1606930847330" duration="4340000" />
+=======
+      <workItem from="1606930847330" duration="1546000" />
+      <workItem from="1606932760139" duration="718000" />
+>>>>>>> b99cb9c2a41526bd8d2988fa57a04970e6ab0adf
     </task>
     <servers />
   </component>
@@ -352,10 +359,10 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="165" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1606873653569">
+    <state x="165" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1606932842286">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="165" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1606873653569" />
+    <state x="165" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1606932842286" />
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1600714911414" />
     <state x="715" y="322" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1606840433462">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -370,6 +377,7 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="295" y="99" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1605721682572" />
+<<<<<<< HEAD
     <state width="1877" height="271" key="GridCell.Tab.0.bottom" timestamp="1606935161832">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -395,6 +403,33 @@
     <state width="1237" height="61" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1606876155805" />
     <state width="1877" height="271" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1606935161832" />
     <state width="1877" height="226" key="GridCell.Tab.1.bottom" timestamp="1606935063479">
+=======
+    <state width="1237" height="241" key="GridCell.Tab.0.bottom" timestamp="1606932849163">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="418" key="GridCell.Tab.0.bottom/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146907" />
+    <state width="1237" height="241" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1606932849163" />
+    <state width="1877" height="179" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1606914304434" />
+    <state width="1237" height="241" key="GridCell.Tab.0.center" timestamp="1606932849162">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="418" key="GridCell.Tab.0.center/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146907" />
+    <state width="1237" height="241" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1606932849162" />
+    <state width="1877" height="179" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1606914304434" />
+    <state width="1237" height="241" key="GridCell.Tab.0.left" timestamp="1606932849162">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="418" key="GridCell.Tab.0.left/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146906" />
+    <state width="1237" height="241" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1606932849162" />
+    <state width="1877" height="179" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1606914304433" />
+    <state width="1237" height="241" key="GridCell.Tab.0.right" timestamp="1606932849162">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="418" key="GridCell.Tab.0.right/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146907" />
+    <state width="1237" height="241" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1606932849162" />
+    <state width="1877" height="179" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1606914304434" />
+    <state width="1877" height="199" key="GridCell.Tab.1.bottom" timestamp="1606914304410">
+>>>>>>> b99cb9c2a41526bd8d2988fa57a04970e6ab0adf
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1101" height="404" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1606876155801" />
@@ -507,14 +542,7 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/InstaPhotoServer/Services/UserService.cs</url>
           <line>18</line>
-          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\InstaPhotoServer\Services\UserService.cs" initialLine="18">
-            <startOffsets>
-              <option value="510" />
-            </startOffsets>
-            <endOffsets>
-              <option value="511" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\InstaPhotoServer\Services\UserService.cs" initialLine="18" />
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
@@ -532,6 +560,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/AdministrativeServer/Controllers/UsersController.cs</url>
+<<<<<<< HEAD
           <line>27</line>
           <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeServer\Controllers\UsersController.cs" initialLine="27">
             <startOffsets>
@@ -607,6 +636,23 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="29" />
+=======
+          <line>28</line>
+          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeServer\Controllers\UsersController.cs" initialLine="27" />
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/AdministrativeClient/Program.cs</url>
+          <line>37</line>
+          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeClient\Program.cs" initialLine="42" />
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/AdministrativeServer/Controllers/UsersController.cs</url>
+          <line>80</line>
+          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeServer\Controllers\UsersController.cs" initialLine="79" />
+          <option name="timeStamp" value="18" />
+>>>>>>> b99cb9c2a41526bd8d2988fa57a04970e6ab0adf
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

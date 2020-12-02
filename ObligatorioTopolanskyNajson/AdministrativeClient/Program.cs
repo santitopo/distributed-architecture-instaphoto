@@ -34,14 +34,14 @@ namespace AdministrativeClient
                 {
                     case "a":
                         client.DefaultRequestHeaders.Accept.Clear();
-                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                         
-                        var streamTask = await client.GetStringAsync("https://localhost:44370/logs");
-                        var logs = JsonSerializer.Deserialize<List<Log>>(streamTask);
+                        var streamResult = await client.GetStreamAsync("https://localhost:44370/logs");
+                        IEnumerable<logModel> logs = await JsonSerializer.DeserializeAsync<List<logModel>>(streamResult);
                         
                         foreach (var log in logs)
                         {
-                            Console.WriteLine("[{0}] {1}", log.Level, log.Message);
+                            Console.WriteLine("[{0}] {1} - {2}", log.level, log.message, log.dateTime);
                         }
                         
                         break; 
@@ -75,8 +75,10 @@ namespace AdministrativeClient
         
     }
         
-        public class Repository
+        public class logModel
         {
-            public string name { get; set; }
+            public string level { get; set; }
+            public string message { get; set; }
+            public DateTime dateTime { get; set; } 
         }
 }
