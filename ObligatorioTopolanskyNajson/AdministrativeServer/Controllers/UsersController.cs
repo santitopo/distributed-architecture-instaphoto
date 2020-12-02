@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,7 +26,20 @@ namespace AdministrativeServer.Controllers
         {            
             try
             {
-                return Ok("hola");
+                AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
+                var channel = GrpcChannel.ForAddress("http://localhost:5001");
+                var client = new ABMUsers.ABMUsersClient(channel);
+                var response = client.AddUser(
+                    new UserModel()
+                    {
+                        Name = user.Name,
+                        Surname = user.Surname,
+                        Password = user.Password,
+                        Username = user.UserName
+                    });
+                
+                
+                return Ok(response.Message);
             }
             catch (Exception e)
             {
@@ -60,11 +74,16 @@ namespace AdministrativeServer.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] User user)
+        public async Task<IActionResult> Put()
         {
             try
             {
-                return Ok();
+                AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
+                var channel = GrpcChannel.ForAddress("http://localhost:5001");
+                var client = new ABMUsers.ABMUsersClient(channel);
+                var response = await client.ModifyUserAsync(new UserModel() { });
+                        
+                return Ok(response.Message);
             }
             catch (Exception e)
             {

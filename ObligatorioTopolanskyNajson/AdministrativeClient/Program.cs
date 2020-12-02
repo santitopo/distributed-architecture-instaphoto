@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -35,14 +34,11 @@ namespace AdministrativeClient
                 {
                     case "a":
                         client.DefaultRequestHeaders.Accept.Clear();
-                        //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                        // client.DefaultRequestHeaders.Accept.Add(
-                        // new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-                         //client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                         
-                        var streamTask = client.GetStreamAsync("https://localhost:44370/logs");
-                        var logs = await JsonSerializer.DeserializeAsync<List<Log>>(await streamTask);
-
+                        var streamTask = await client.GetStringAsync("https://localhost:44370/logs");
+                        var logs = JsonSerializer.Deserialize<List<Log>>(streamTask);
+                        
                         foreach (var log in logs)
                         {
                             Console.WriteLine("[{0}] {1}", log.Level, log.Message);

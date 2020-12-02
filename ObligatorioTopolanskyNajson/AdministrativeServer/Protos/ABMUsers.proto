@@ -5,13 +5,16 @@ option csharp_namespace = "AdministrativeServer";
 package greet;
 
 service ABMUsers {
-    rpc AddUser (UserRequest) returns (InfoResponse);
-    rpc ModifyUser (UserRequest) returns (InfoResponse);
-    rpc DeleteUser (UserRequest) returns (InfoResponse);
+    rpc AddUser (UserModel) returns (InfoResponse);
+    rpc ModifyUser (UserModel) returns (InfoResponse);
+    rpc DeleteUser (UserModel) returns (InfoResponse);
 }
 
-message UserRequest{
-    string user = 1;
+message UserModel{
+    string name = 1;
+    string surname = 2;
+    string username = 3;
+    string password = 4;
 }
 
 message InfoResponse{

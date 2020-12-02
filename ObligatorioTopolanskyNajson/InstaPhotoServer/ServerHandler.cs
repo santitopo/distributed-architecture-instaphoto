@@ -19,14 +19,12 @@ using RabbitMQ.Client;
 
 namespace InstaPhotoServer
 {
-    class ServerHandler
+    public class ServerHandler
     {
         private readonly TcpListener _tcpListener;
         private readonly IFileStreamHandler _fileStreamHandler;
-        private static Repository _repository;
+        public static Repository _repository;
         private static bool _exit;
-
-        
 
         public ServerHandler(Repository repository)
         {
@@ -279,9 +277,7 @@ namespace InstaPhotoServer
             {
                 if (_repository.FindUserByUsername(user.UserName) == null)
                 {
-                    _repository.Users.Add(user);
-                    _repository.Photos.Add(user, new List<Photo>());
-                    
+                    _repository.AddUser(user);
                     string message = "Usuario "+ registerData[2] +" registrado correctamente ";
                     GenerateLog(message, LogConstants.Info);
                     Send(tcpClient.GetStream(), CommandConstants.OK,message);

@@ -17,6 +17,35 @@ namespace InstaPhotoServer
             Photos = new Dictionary<User, List<Photo>>();
         }
 
+        public void AddUser(User aUser)
+        {
+            Users.Add(aUser);
+            Photos.Add(aUser, new List<Photo>());
+        }
+        
+        public void DeleteUser(User aUser)
+        {
+            foreach (var userPhotos in Photos)
+            {
+                foreach (var photo in userPhotos.Value)
+                {
+                    foreach (var comment in photo.Comments)
+                    {
+                        photo.Comments.RemoveAll(x => x.Item1.Equals(aUser));
+                    }
+                }
+            }
+            
+            Users.Remove(aUser);
+            Photos.Remove(aUser);
+        }
+        
+        public void ModifyUser(User aUser)
+        {
+            User user = FindUserByUsername(aUser.UserName);
+            user = aUser;
+        }
+        
         public User FindUserByUsernamePassword(string aUserName, string aPassword)
         {
             User aUser = null;
@@ -26,7 +55,6 @@ namespace InstaPhotoServer
                     if (user.UserName.Equals(aUserName) && user.Password.Equals(aPassword))
                         aUser = user;
                 }
-            
 
             return aUser;
         }
@@ -39,8 +67,6 @@ namespace InstaPhotoServer
                     if (user.UserName.Equals(aUserName))
                         aUser = user;
                 }
-            
-
             return aUser;
         }
 

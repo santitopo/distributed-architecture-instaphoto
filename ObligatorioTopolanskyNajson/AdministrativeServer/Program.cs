@@ -23,18 +23,19 @@ namespace AdministrativeServer
         
         static async Task GrpcClient()
         {
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
-            Console.WriteLine("Starting gRPC client example......");
-            
-            
-            var channel = GrpcChannel.ForAddress("http://localhost:5001");
-            var client = new ABMUsers.ABMUsersClient(channel);
-            var response = await client.AddUserAsync(new UserRequest() {User = "Hola"});
-            Console.WriteLine("Respuesta: " + response.Message);
-            Console.ReadLine();
-            
+               AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
+                var channel = GrpcChannel.ForAddress("http://localhost:5001");
+                var client = new ABMUsers.ABMUsersClient(channel);
+                var response = await client.AddUserAsync( new UserModel()
+                {
+                    Name = "Pepe",
+                    Surname = "pp",
+                    Password = "blala",
+                    Username = "dasdsa"
+                });
+
+                Console.WriteLine(response.Message);
+                Console.ReadLine();
         }
-        
-        
     }
 }
