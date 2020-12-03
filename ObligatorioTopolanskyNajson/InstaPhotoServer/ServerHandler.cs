@@ -129,8 +129,11 @@ namespace InstaPhotoServer
             }
             catch (Exception e)
             {
-                if(!_exit)
+                if (!_exit)
+                {
+                    GenerateLog(e.Message, LogConstants.Error);
                     Console.WriteLine(e.Message);
+                }
             }
         }
 
@@ -330,35 +333,44 @@ namespace InstaPhotoServer
         }
         private void GetCommentFunction(TcpClient tcpClient, Header header)
         {
-            User username = _repository.FindUserByTcpClient(tcpClient);
-            string fileName = header.IData;
-
-            Photo selectedPhoto;
-            lock (_repository.Photos)
+            try
             {
-                List<Photo> associatedPhotos = _repository.FindPhotosByUsername(username.UserName);
-                selectedPhoto = associatedPhotos.Find(x => x.Name == fileName);
-            }
+                User username = _repository.FindUserByTcpClient(tcpClient);
+                string fileName = header.IData;
 
-            if (selectedPhoto != null)
-            {
-                List<string> comments = new List<string>();
-                foreach (var comment in selectedPhoto.Comments)
+                Photo selectedPhoto;
+                lock (_repository.Photos)
                 {
-                    comments.Add(comment.Item1.Name +" - "+ comment.Item2);
+                    List<Photo> associatedPhotos = _repository.FindPhotosByUsername(username.UserName);
+                    selectedPhoto = associatedPhotos.Find(x => x.Name == fileName);
                 }
+
+                if (selectedPhoto != null)
+                {
+                    List<string> comments = new List<string>();
+                    foreach (var comment in selectedPhoto.Comments)
+                    {
+                        comments.Add(comment.Item1.Name +" - "+ comment.Item2);
+                    }
                 
-                string message = "Comentarios correctamente mostrados para la foto: "+ selectedPhoto.Name;
-                GenerateLog(message, LogConstants.Info);
+                    string message = "Comentarios correctamente mostrados para la foto: "+ selectedPhoto.Name;
+                    GenerateLog(message, LogConstants.Info);
                 
-                Send(tcpClient.GetStream(), CommandConstants.OK, JsonSerializer.Serialize(comments));
+                    Send(tcpClient.GetStream(), CommandConstants.OK, JsonSerializer.Serialize(comments));
+                }
+                else
+                {
+                    string message = "No se encontró la foto consultada: "+ selectedPhoto.Name;
+                    GenerateLog(message, LogConstants.Info);
+                    Send(tcpClient.GetStream(), CommandConstants.Error, message);
+                }
             }
-            else
+            catch (Exception e)
             {
-                string message = "No se encontró la foto consultada: "+ selectedPhoto.Name;
-                GenerateLog(message, LogConstants.Info);
-                Send(tcpClient.GetStream(), CommandConstants.Error, message);
+                GenerateLog(e.Message, LogConstants.Error);
+                Send(tcpClient.GetStream(), CommandConstants.Error, "Error Procensado la solicitud.");
             }
+           
             
         }
         private void UploadPictureFunction(TcpClient tcpClient, Header header)

@@ -48,9 +48,11 @@ namespace InstaPhotoServer
             User u1 = new User("Jose", "Hernandez", "jh12", "user");
             User u2 = new User("Martina", "Perez", "mp10", "user");
             User u3 = new User("Santiago", "Topolansky", "santi", "topo");
+            User u4 = new User("Felipe", "Najson", "fn12", "feli12");
             repository.AddUser(u1);
             repository.AddUser(u2);
             repository.AddUser(u3);
+            repository.AddUser(u4);
         }
     }
 }

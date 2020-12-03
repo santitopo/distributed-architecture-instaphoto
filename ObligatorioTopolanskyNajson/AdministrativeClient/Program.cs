@@ -94,7 +94,7 @@ namespace AdministrativeClient
                     Console.WriteLine("{0}. {1} {2} - {3}", i,users[i].name,users[i].surname, users[i].username);
                 }
                 
-                Console.WriteLine("Ingrese el numero del usuario que desea eliminar: ");
+                Console.WriteLine("Ingrese el numero del usuario que desea modificar: ");
                 string input = Console.ReadLine();
                 int selectedIndex = Convert.ToInt32(input);
 
