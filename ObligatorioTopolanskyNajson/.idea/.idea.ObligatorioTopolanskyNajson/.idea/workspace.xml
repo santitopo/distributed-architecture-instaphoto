@@ -38,19 +38,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfb4f17f-ea0d-4e48-874a-d4963477001c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Arquitectura Obligatorio.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/../Arquitectura Obligatorio.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ObligatorioTopolanskyNajson/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/config/applicationhost.config" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/config/applicationhost.config" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AdministrativeClient/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AdministrativeClient/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AdministrativeServer/Controllers/UsersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AdministrativeServer/Controllers/UsersController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AdministrativeServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AdministrativeServer/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AdministrativeServer/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/AdministrativeServer/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AdministrativeServer/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AdministrativeServer/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/Config/Config.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Common/Config/Config.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InstaPhotoServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/InstaPhotoServer/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InstaPhotoServer/ServerHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/InstaPhotoServer/ServerHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LogsServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LogsServer/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LogsServer/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/LogsServer/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.txt" beforeDir="false" afterPath="$PROJECT_DIR$/config.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,11 +53,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/AD61CA47-F8B7-4CC6-93A0-BA44CC73B5C7/1E0/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/LogsServer/Program.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/AD61CA47-F8B7-4CC6-93A0-BA44CC73B5C7/D3/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/F680C866-D120-4163-9634-EBD842255BE9/153/ControllerFactoryProvider.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/F680C866-D120-4163-9634-EBD842255BE9/FE/ControllerActionInvoker.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -276,6 +264,8 @@
       <workItem from="1606932760139" duration="1556000" />
       <workItem from="1606937046565" duration="3135000" />
       <workItem from="1606948662280" duration="7660000" />
+      <workItem from="1607004966621" duration="1026000" />
+      <workItem from="1607006466311" duration="366000" />
     </task>
     <servers />
   </component>
@@ -321,31 +311,31 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="295" y="99" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1605721682572" />
-    <state width="1493" height="211" key="GridCell.Tab.0.bottom" timestamp="1606956331316">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1237" height="389" key="GridCell.Tab.0.bottom" timestamp="1607005992493">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="418" key="GridCell.Tab.0.bottom/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146907" />
+    <state width="1237" height="389" key="GridCell.Tab.0.bottom/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1607005992493" />
     <state width="1237" height="289" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1606933709567" />
     <state width="1493" height="211" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1606956331316" />
     <state width="1877" height="253" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1606940184689" />
-    <state width="1493" height="211" key="GridCell.Tab.0.center" timestamp="1606956331316">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1237" height="389" key="GridCell.Tab.0.center" timestamp="1607005992493">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="418" key="GridCell.Tab.0.center/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146907" />
+    <state width="1237" height="389" key="GridCell.Tab.0.center/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1607005992493" />
     <state width="1237" height="289" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1606933709567" />
     <state width="1493" height="211" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1606956331316" />
     <state width="1877" height="253" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1606940184688" />
-    <state width="1493" height="211" key="GridCell.Tab.0.left" timestamp="1606956331315">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1237" height="389" key="GridCell.Tab.0.left" timestamp="1607005992493">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="418" key="GridCell.Tab.0.left/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146906" />
+    <state width="1237" height="389" key="GridCell.Tab.0.left/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1607005992493" />
     <state width="1237" height="289" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1606933709567" />
     <state width="1493" height="211" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1606956331315" />
     <state width="1877" height="253" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1606940184688" />
-    <state width="1493" height="211" key="GridCell.Tab.0.right" timestamp="1606956331316">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1237" height="389" key="GridCell.Tab.0.right" timestamp="1607005992493">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="418" key="GridCell.Tab.0.right/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1605551146907" />
+    <state width="1237" height="389" key="GridCell.Tab.0.right/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1607005992493" />
     <state width="1237" height="289" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1606933709567" />
     <state width="1493" height="211" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1606956331316" />
     <state width="1877" height="253" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.195.1536.824@0.0.1920.1040" timestamp="1606940184689" />
@@ -491,132 +481,44 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/AdministrativeClient/Program.cs</url>
-          <line>160</line>
-          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeClient\Program.cs" initialLine="100">
-            <startOffsets>
-              <option value="7015" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7058" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/AdministrativeClient/Program.cs</url>
-          <line>158</line>
-          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeClient\Program.cs" initialLine="97">
-            <startOffsets>
-              <option value="6875" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6947" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/AdministrativeClient/Program.cs</url>
-          <line>108</line>
-          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeClient\Program.cs" initialLine="78">
-            <startOffsets>
-              <option value="4595" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4632" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/AdministrativeClient/Program.cs</url>
-          <line>32</line>
-          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeClient\Program.cs" initialLine="28">
-            <startOffsets>
-              <option value="997" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1076" />
-            </endOffsets>
-          </properties>
+          <line>46</line>
+          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeClient\Program.cs" initialLine="28" />
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/AdministrativeClient/Program.cs</url>
-          <line>20</line>
-          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeClient\Program.cs" initialLine="20">
-            <startOffsets>
-              <option value="510" />
-            </startOffsets>
-            <endOffsets>
-              <option value="538" />
-            </endOffsets>
-          </properties>
+          <line>25</line>
+          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeClient\Program.cs" initialLine="20" />
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/LogsServer/Program.cs</url>
-          <line>19</line>
-          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\LogsServer\Program.cs" initialLine="19">
-            <startOffsets>
-              <option value="465" />
-            </startOffsets>
-            <endOffsets>
-              <option value="510" />
-            </endOffsets>
-          </properties>
+          <line>22</line>
+          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\LogsServer\Program.cs" initialLine="19" />
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/AdministrativeServer/Startup.cs</url>
           <line>20</line>
-          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeServer\Startup.cs" initialLine="20">
-            <startOffsets>
-              <option value="564" />
-            </startOffsets>
-            <endOffsets>
-              <option value="609" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeServer\Startup.cs" initialLine="20" />
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Common/Config/Config.cs</url>
           <line>24</line>
-          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\Common\Config\Config.cs" initialLine="24">
-            <startOffsets>
-              <option value="731" />
-            </startOffsets>
-            <endOffsets>
-              <option value="833" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\Common\Config\Config.cs" initialLine="24" />
           <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/AdministrativeServer/Controllers/UsersController.cs</url>
           <line>20</line>
-          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeServer\Controllers\UsersController.cs" initialLine="20">
-            <startOffsets>
-              <option value="557" />
-            </startOffsets>
-            <endOffsets>
-              <option value="602" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeServer\Controllers\UsersController.cs" initialLine="20" />
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/AdministrativeServer/Controllers/UsersController.cs</url>
           <line>29</line>
-          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeServer\Controllers\UsersController.cs" initialLine="29">
-            <startOffsets>
-              <option value="765" />
-            </startOffsets>
-            <endOffsets>
-              <option value="853" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\felip\Documents\GitHub\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson\AdministrativeServer\Controllers\UsersController.cs" initialLine="29" />
           <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>

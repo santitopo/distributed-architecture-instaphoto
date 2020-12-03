@@ -47,7 +47,7 @@ namespace AdministrativeClient
                         switch (input)
                         {
                             case "a":
-                                GetLogsFunction();
+                                await GetLogsFunction();
                                 break; 
                             case "b":
                                 await AddUserFunction();
@@ -194,19 +194,29 @@ namespace AdministrativeClient
             }
         }
 
-        private static async void GetLogsFunction()
+        private static async Task GetLogsFunction()
         {
-            _client.DefaultRequestHeaders.Accept.Clear();
-            var response = await _client.GetStreamAsync(Config.LogsAPIUri);
-            IEnumerable<logModel> logs = await JsonSerializer.DeserializeAsync<List<logModel>>(response);
-                       
-            Console.ForegroundColor = ConsoleColor.Green;
-            foreach (var log in logs)
-            {
-                Console.WriteLine("[{0}] {1} - {2}", log.level, log.message, log.dateTime);
-            }
-            Console.ForegroundColor = ConsoleColor.White;
 
+            try
+            {
+                _client.DefaultRequestHeaders.Accept.Clear();
+                var response = await _client.GetStreamAsync(Config.LogsAPIUri);
+                IEnumerable<logModel> logs = await JsonSerializer.DeserializeAsync<List<logModel>>(response);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                foreach (var log in logs)
+                {
+                    Console.WriteLine("[{0}] {1} - {2}", log.level, log.message, log.dateTime);
+                }
+
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            catch (Exception e)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error procesando la solicitud, vuelva a intentarlo.");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
         }
 
         private static async Task AddUserFunction()
