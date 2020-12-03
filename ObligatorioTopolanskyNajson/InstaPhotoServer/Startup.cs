@@ -31,7 +31,7 @@ namespace InstaPhotoServer
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<UsersService>();
 
                 endpoints.MapGet("/",
                     async context =>

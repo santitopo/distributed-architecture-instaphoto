@@ -4,24 +4,45 @@
     <e p="C:\Users\stopo\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
     <e p="C:\Users\stopo\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_ObligatorioTopolanskyNajson.-330140655.00" t="ExcludeRecursive" />
     <e p="C:\Users\stopo\Documents\ORT\Sem6\Programación de Redes\Obligatorio\ProgRedesNajsonTopolansky\ObligatorioTopolanskyNajson" t="IncludeFlat">
+      <e p="AdministrativeClient" t="IncludeRecursive">
+        <e p="AdministrativeClient.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="AdministrativeClient.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+      </e>
       <e p="AdministrativeServer" t="IncludeRecursive">
         <e p="AdministrativeServer.csproj" t="IncludeRecursive" />
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
+        <e p="Controllers" t="Include">
+          <e p="UsersController.cs" t="Include" />
+        </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp3.1" t="Include">
               <e p="AdministrativeServer.AssemblyInfo.cs" t="Include" />
               <e p="Protos" t="Include">
-                <e p="Greet.cs" t="Include" />
-                <e p="GreetGrpc.cs" t="Include" />
+                <e p="ABMUsers.cs" t="Include" />
+                <e p="ABMUsersGrpc.cs" t="Include" />
               </e>
             </e>
           </e>
         </e>
         <e p="Program.cs" t="Include" />
-        <e p="Protos" t="Include">
-          <e p="greet.proto" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
         </e>
+        <e p="Protos" t="Include">
+          <e p="ABMUsers.proto" t="Include" />
+        </e>
+        <e p="Startup.cs" t="Include" />
       </e>
       <e p="Client" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
@@ -83,8 +104,8 @@
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp3.1" t="Include">
-              <e p="Greet.cs" t="Include" />
-              <e p="GreetGrpc.cs" t="Include" />
+              <e p="ABMUsers.cs" t="Include" />
+              <e p="ABMUsersGrpc.cs" t="Include" />
               <e p="InstaPhotoServer.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -95,23 +116,26 @@
           <e p="launchSettings.json" t="Include" />
         </e>
         <e p="Protos" t="Include">
-          <e p="greet.proto" t="Include" />
+          <e p="ABMUsers.proto" t="Include" />
         </e>
         <e p="Repository.cs" t="Include" />
         <e p="ServerHandler.cs" t="Include" />
         <e p="ServerImages" t="Include">
           <e p="ImagenDePrueba.png" t="Include" />
-          <e p="img.png" t="Include" />
-          <e p="retro.png" t="Include" />
         </e>
         <e p="Services" t="Include">
-          <e p="GreeterService.cs" t="Include" />
+          <e p="UserService.cs" t="Include" />
         </e>
         <e p="Startup.cs" t="Include" />
         <e p="User.cs" t="Include" />
       </e>
       <e p="LogsServer" t="IncludeRecursive">
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
+        <e p="Controllers" t="Include">
+          <e p="LogsController.cs" t="Include" />
+        </e>
         <e p="LogsServer.csproj" t="IncludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -121,6 +145,10 @@
           </e>
         </e>
         <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="Startup.cs" t="Include" />
       </e>
       <e p="ObligatorioTopolanskyNajson.sln" t="IncludeFlat" />
       <e p="packages" t="ExcludeRecursive" />

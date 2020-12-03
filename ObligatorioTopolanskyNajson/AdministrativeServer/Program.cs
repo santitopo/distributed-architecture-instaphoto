@@ -1,22 +1,24 @@
-﻿using System;
+using System;
+using System.Threading;
 using System.Threading.Tasks;
+using AdministrativeServer;
+using Common.Config;
 using Grpc.Net.Client;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace AdministrativeServer
 {
-    class Program
+    public class Program
     {
-        static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
-            Console.WriteLine("Starting gRPC client example......");
-            var channel = GrpcChannel.ForAddress("http://localhost:5001");
-            var client = new Greeter.GreeterClient(channel);
-            var response =  await client.SayHelloAsync(new HelloRequest{Name = "Hola"});
-            Console.WriteLine("Respuesta: " + response.Message);
-            
-            
-            Console.ReadLine();
+            CreateHostBuilder(args).Build().Run();
         }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        
     }
 }

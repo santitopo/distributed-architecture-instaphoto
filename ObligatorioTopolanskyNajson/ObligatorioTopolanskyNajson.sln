@@ -4,11 +4,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{396F997C-22D7-4E0A-B445-A6035BDBF6A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogsServer", "LogsServer\LogsServer.csproj", "{1F393499-E2B6-476F-A93B-E90014388B9C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdministrativeServer", "AdministrativeServer\AdministrativeServer.csproj", "{3301D9CA-1AE3-4947-9B5D-039DF097ED9C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstaPhotoServer", "InstaPhotoServer\InstaPhotoServer.csproj", "{374D1D61-A590-4739-BAF3-0FF7A2619F28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogsServer", "LogsServer\LogsServer.csproj", "{762022CE-5308-4053-B385-D93EDE9C8FD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdministrativeServer", "AdministrativeServer\AdministrativeServer.csproj", "{7C87072A-83AC-44DE-94FE-29BB9EAF9554}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdministrativeClient", "AdministrativeClient\AdministrativeClient.csproj", "{C3DE2101-235E-40D5-9B48-65AEB6B7B2F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,17 +26,21 @@ Global
 		{396F997C-22D7-4E0A-B445-A6035BDBF6A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{396F997C-22D7-4E0A-B445-A6035BDBF6A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{396F997C-22D7-4E0A-B445-A6035BDBF6A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F393499-E2B6-476F-A93B-E90014388B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F393499-E2B6-476F-A93B-E90014388B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F393499-E2B6-476F-A93B-E90014388B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F393499-E2B6-476F-A93B-E90014388B9C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3301D9CA-1AE3-4947-9B5D-039DF097ED9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3301D9CA-1AE3-4947-9B5D-039DF097ED9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3301D9CA-1AE3-4947-9B5D-039DF097ED9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3301D9CA-1AE3-4947-9B5D-039DF097ED9C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{374D1D61-A590-4739-BAF3-0FF7A2619F28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{374D1D61-A590-4739-BAF3-0FF7A2619F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{374D1D61-A590-4739-BAF3-0FF7A2619F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{374D1D61-A590-4739-BAF3-0FF7A2619F28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{762022CE-5308-4053-B385-D93EDE9C8FD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{762022CE-5308-4053-B385-D93EDE9C8FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{762022CE-5308-4053-B385-D93EDE9C8FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{762022CE-5308-4053-B385-D93EDE9C8FD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C87072A-83AC-44DE-94FE-29BB9EAF9554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C87072A-83AC-44DE-94FE-29BB9EAF9554}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C87072A-83AC-44DE-94FE-29BB9EAF9554}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C87072A-83AC-44DE-94FE-29BB9EAF9554}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3DE2101-235E-40D5-9B48-65AEB6B7B2F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3DE2101-235E-40D5-9B48-65AEB6B7B2F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3DE2101-235E-40D5-9B48-65AEB6B7B2F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3DE2101-235E-40D5-9B48-65AEB6B7B2F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

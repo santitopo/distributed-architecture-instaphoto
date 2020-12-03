@@ -1,22 +1,26 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using Common.Config;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using InstaPhotoServer;
 
-
 namespace LogsServer
 {
-    class Program
+    public class Program
     {
         public static List<Log> logs = new List<Log>();
-
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
+            Config.StartConfiguration(@"..\\config.txt");
+            
             using var channel = new ConnectionFactory() {HostName = "localhost"}.CreateConnection().CreateModel();
-            channel.QueueDeclare(queue: "log_queue",
+            channel.QueueDeclare(queue: Config.QueueName,
                 durable: false,
                 exclusive: false,
                 autoDelete: false,
@@ -30,33 +34,15 @@ namespace LogsServer
                 var log = JsonSerializer.Deserialize<Log>(message);
                 logs.Add(log);
             };
-            channel.BasicConsume(queue: "log_queue",
+            channel.BasicConsume(queue: Config.QueueName,
                 autoAck: true,
                 consumer: consumer);
 
-            var exit = false;
-            Console.WriteLine("--------Bienvenido al servidor de Logs--------");
-            Console.WriteLine("Opciones:\n 1 - Ver Lista de Logs.\n 2 - Salir");
-            while (!exit)
-            {
-                var option = Console.ReadLine();
-                switch (option)
-                {
-                    case "1":
-                        foreach (var log in logs)
-                        {
-                            string output = "Nivel: " + log.Level + " | Mensaje: " + log.Message + " |  Hora: " + log.DateTime;
-                            Console.WriteLine(output);
-                        }
-                        break;
-                    case "2":
-                        exit = true;
-                        break;
-                    default:
-                        Console.WriteLine("Opcion Incorrecta");
-                        break;
-                }
-            }
+            CreateHostBuilder(args).Build().Run();
         }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }
