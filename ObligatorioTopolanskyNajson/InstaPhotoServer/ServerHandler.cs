@@ -164,7 +164,7 @@ namespace InstaPhotoServer
         private async void GenerateLog(string message, string level)
         {
             var channel = new ConnectionFactory() {HostName = "localhost"}.CreateConnection().CreateModel();
-            channel.QueueDeclare(queue: "log_queue",
+            channel.QueueDeclare(queue: Config.QueueName,
                 durable: false,
                 exclusive: false,
                 autoDelete: false,
@@ -185,7 +185,7 @@ namespace InstaPhotoServer
             {
                 var body = Encoding.UTF8.GetBytes(message);
                 channel.BasicPublish(exchange: "",
-                    routingKey: "log_queue",
+                    routingKey: Config.QueueName,
                     basicProperties: null,
                     body: body);
                 returnVal = true;

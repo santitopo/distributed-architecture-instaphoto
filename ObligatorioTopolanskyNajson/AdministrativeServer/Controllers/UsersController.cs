@@ -6,6 +6,7 @@ using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AdministrativeServer;
+using Common.Config;
 using InstaPhotoServer;
 
 namespace AdministrativeServer.Controllers
@@ -17,6 +18,7 @@ namespace AdministrativeServer.Controllers
         private readonly ILogger<UsersController> _logger;
         public UsersController(ILogger<UsersController> logger)
         {
+            Config.StartConfiguration(@"..\\config.txt");
             _logger = logger;
         }
 
@@ -26,7 +28,7 @@ namespace AdministrativeServer.Controllers
             try
             {
                 AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
-                var channel = GrpcChannel.ForAddress("http://localhost:5001");
+                var channel = GrpcChannel.ForAddress(Config.GrpcServerIp);
                 var client = new ABMUsers.ABMUsersClient(channel);
                 var response = client.GetUsers(new Empty());
                 return Ok(response.Users);
@@ -43,7 +45,7 @@ namespace AdministrativeServer.Controllers
             try
             {
                 AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
-                var channel = GrpcChannel.ForAddress("http://localhost:5001");
+                var channel = GrpcChannel.ForAddress(Config.GrpcServerIp);
                 var client = new ABMUsers.ABMUsersClient(channel);
                 var response = client.AddUser(
                     new UserModel()
@@ -68,7 +70,7 @@ namespace AdministrativeServer.Controllers
             try
             {
                 AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
-                var channel = GrpcChannel.ForAddress("http://localhost:5001");
+                var channel = GrpcChannel.ForAddress(Config.GrpcServerIp);
                 var client = new ABMUsers.ABMUsersClient(channel);
                 var response = client.DeleteUser(
                     new UserModel()
@@ -93,7 +95,7 @@ namespace AdministrativeServer.Controllers
             try
             {
                 AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
-                var channel = GrpcChannel.ForAddress("http://localhost:5001");
+                var channel = GrpcChannel.ForAddress(Config.GrpcServerIp);
                 var client = new ABMUsers.ABMUsersClient(channel);
                 var response = client.ModifyUser(
                     new UserModel()

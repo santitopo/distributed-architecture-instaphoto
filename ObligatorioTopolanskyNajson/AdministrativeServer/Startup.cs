@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -17,6 +18,7 @@ namespace AdministrativeServer
     {
         public Startup(IConfiguration configuration)
         {
+            Config.StartConfiguration(@"..\\config.txt");
             Configuration = configuration;
         }
 
