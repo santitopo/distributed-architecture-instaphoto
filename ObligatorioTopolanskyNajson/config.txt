@@ -1,0 +1,12 @@
+ipserver#127.0.0.1
+portserver#6000
+ipclient#127.0.0.1
+portclient#0
+imagesFolder#ServerImages\\
+rootUser#root
+rootPassword#root
+grpcServerIp#http://localhost:5001
+grpcPort#5001
+usersAPIUri#https://localhost:44359/users
+logsAPIUri#https://localhost:44370/logs
+queueName#log_queue

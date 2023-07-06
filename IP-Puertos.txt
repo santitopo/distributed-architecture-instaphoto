@@ -1,0 +1,11 @@
+InstaPhotoServer: 
+	- gRPC: localhost:5001
+	- Server: 127.0.0.1:6000
+	- MQ: ?
+Cliente: 
+	- 127.0.0.1:0
+LogServer:
+	- MQ: ?
+	- WebAPI:  https://localhost:44370/
+AdministrativeServer:
+	- WebAPI: https://localhost:44359/
