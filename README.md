@@ -1,4 +1,4 @@
-# ProgRedesNajsonTopolansky
+# InstaPhoto Distributed Architecture
 
 InstaPhoto is a distributed system, composed of five applications
 - A server in which photo data and comments related to them must be saved
